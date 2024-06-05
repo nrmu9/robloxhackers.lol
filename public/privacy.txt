@@ -1,0 +1,35 @@
+1. Introduction
+
+Welcome to robloxhackers.lol. We are committed to protecting your privacy and ensuring that your personal information is handled in a safe and responsible manner. This Privacy Policy outlines how we collect, use, and protect your information.
+
+2. Information We Collect
+
+We only collect email addresses from users when they register for functionality reasons. Registration is handled through Firebase login.
+
+3. How We Use Your Information
+
+The email addresses we collect are used solely for the functionality of our website. We do not share your data with any third parties or use it for marketing purposes.
+
+4. User Rights and Choices
+
+Users have the right to request the deletion of their account. To exercise this right, please contact us via our Discord server linked on the website.
+
+5. Data Security
+
+We take the security of your data seriously. We use encryption and secure servers to protect your information. Our services are hosted on Firebase and Firestore, which comply with industry-standard security measures.
+
+6. Cookies and Tracking
+
+We do not use cookies or any other tracking technologies on our website.
+
+7. Legal Compliance
+
+We comply with the General Data Protection Regulation (GDPR) to ensure your data is handled according to the highest standards of privacy protection.
+
+8. Policy Updates
+
+We do not plan to update this Privacy Policy frequently. Users will not be notified of updates. However, we reserve the right to make changes to this policy at any time. We encourage you to review this policy periodically.
+
+9. Contact Information
+
+If you have any questions or concerns about our Privacy Policy, please contact us through our Discord server linked on the website.
