@@ -21,13 +21,13 @@ html, body, #__next {
 }
 
 .markdown-content p {
-  margin: 0rem 0; /* Reduce margin for paragraphs */
+  margin: 0rem 0;
 }
 
 .markdown-content ul,
 .markdown-content ol {
   margin-left: 1.5rem;
-  margin-bottom: 0rem; /* Reduce bottom margin for lists */
+  margin-bottom: 0rem;
 }
 
 .markdown-content ul {
@@ -53,7 +53,6 @@ html, body, #__next {
   margin: 0;
 }
 
-/* Scrollbar styles */
 * {
   scrollbar-width: thin;
   scrollbar-color: #4f46e5 #18181b; /* Firefox */
@@ -61,7 +60,6 @@ html, body, #__next {
   @apply scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900;
 }
 
-/* Webkit browsers */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -80,7 +78,6 @@ html, body, #__next {
   background-image: linear-gradient(to bottom, #4f46e5, #6366f1);
 }
 
-/* Additional styles for full height and modal centering */
 html, body {
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
