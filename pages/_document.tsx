@@ -26,11 +26,6 @@ static async getInitialProps(ctx: any) {
           <meta name="theme-color" content="#2d2de0" />
 
           <meta name="google-adsense-account" content="ca-pub-2235454136284515" />
-
-          <Script
-            src="//pl23486526.highcpmgate.com/e46d1f9e3f45ea4736695ed16e2aa75b/invoke.js"
-            strategy="beforeInteractive"
-          />
         </Head>
         <body>
           <Main />

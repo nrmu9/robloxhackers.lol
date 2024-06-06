@@ -40,10 +40,6 @@ function App({ Component, pageProps }: AppProps) {
             <Layout>
                 <GoogleAnalytics trackingId="G-815TJX7480" />
                 <AdSense pId='2235454136284515'/>
-                <Script 
-                    strategy="afterInteractive"
-                    src="//pl23486439.highcpmgate.com/d8/91/a2/d891a271ac2e00307483f919a2844c0d.js"
-                />
                 <Component {...pageProps} />
             </Layout>
             <div id="modal-root"></div>

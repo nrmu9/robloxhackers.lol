@@ -67,7 +67,6 @@ const Index = () => {
       <div className="relative p-4 z-10">
         <AnnouncementsList />
         <CardList cards={cards || []} canEdit={canEdit} />
-        <div id="container-e46d1f9e3f45ea4736695ed16e2aa75b"></div>
       </div>
     </div>
   );
