@@ -34,6 +34,10 @@ jobs:
             cd /root/robloxhackers.lol
             npm install
             npm run build
-            pm2 restart robloxhackers.lol || pm2 start npx --name "robloxhackers.lol" -- next start -H 0.0.0.0 -p 80
+            echo 'npx next start -H 0.0.0.0 -p 80' > start.sh
+            chmod +x start.sh
+            pm2 stop robloxhackers.lol || true
+            pm2 delete robloxhackers.lol || true
+            pm2 start ./start.sh --name "robloxhackers.lol"
             pm2 save
           EOF
