@@ -35,4 +35,5 @@ jobs:
             npm install
             npm run build
             pm2 restart robloxhackers.lol || pm2 start npm --name "robloxhackers.lol" -- start
+            pm2 save
           EOF
