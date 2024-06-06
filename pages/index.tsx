@@ -1,75 +1,81 @@
-import React, { useContext } from 'react';
-import CardList from '@/components/common/CardList';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { db } from '@/utils/firebase';
-import { collection, DocumentData, QueryDocumentSnapshot, FirestoreDataConverter } from 'firebase/firestore';
-import { AuthContext } from '@/contexts/authContext';
-import AnnouncementsList from '@/components/common/AnnouncementsList';
-import Script from 'next/script';
+import React from 'react';
+import SocialsCard from '@/components/SocialsCard';
+import Tilt from 'react-parallax-tilt';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-type ButtonProps = [string, string];
+const IndexPage = () => {
+  const router = useRouter();
 
-type CardProps = {
-  id: string;
-  name: string;
-  platform: string[];
-  pros: string[];
-  neutral: string[];
-  cons: string[];
-  note: string;
-  button: ButtonProps;
-  lastEditedBy: string;
-};
-
-const cardConverter: FirestoreDataConverter<CardProps> = {
-  toFirestore(card: CardProps): DocumentData {
-    return { ...card };
-  },
-  fromFirestore(snapshot: QueryDocumentSnapshot): CardProps {
-    const data = snapshot.data();
-    return {
-      id: snapshot.id,
-      name: data.name,
-      platform: data.platform,
-      pros: data.pros,
-      neutral: data.neutral,
-      cons: data.cons,
-      note: data.note,
-      button: data.button,
-      lastEditedBy: data.lastEditedBy,
-    };
-  },
-};
-
-const Index = () => {
-  const authContext = useContext(AuthContext);
-  const user = authContext?.user;
-  const role = authContext?.role;
-  const editableCards = authContext?.editableCards;
-
-  const cardsCollection = collection(db, 'cards').withConverter(cardConverter);
-  const [cards, loading, error] = useCollectionData(cardsCollection);
-
-  const canEdit = (cardId: string) => {
-    if (!user) return false;
-    if (role === 'admin') return true;
-    if (role === 'editor' && editableCards) {
-      return editableCards.includes(cardId);
-    }
-    return false;
+  const navigateToExploits = () => {
+    router.push('/exploits');
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error loading cards: {error.message}</div>;
+  const navigateToUpdates = () => {
+    router.push('/updates');
+  };
 
   return (
-    <div className='min-h-screen'>
-      <div className="relative p-4 z-10">
-        <AnnouncementsList />
-        <CardList cards={cards || []} canEdit={canEdit} />
+    <div className="container mx-auto p-4 flex flex-col items-center">
+      <SocialsCard />
+      <div className="mt-8 max-w-lg w-full">
+        <Tilt
+          tiltMaxAngleX={15}
+          tiltMaxAngleY={15}
+          scale={1.05}
+          transitionSpeed={250}
+          glareEnable={true}
+          glareMaxOpacity={0.10}
+          glareColor="gray"
+          glarePosition="all"
+          glareBorderRadius="10px"
+        >
+          <div className="card-container bg-zinc-900 bg-opacity-20 border-zinc-800 border text-white rounded-lg shadow-lg p-6 transform transition-transform">
+            <h2 className="text-3xl font-semibold mb-4 text-center">Stay Updated with Latest Exploits</h2>
+            <p className="mb-4 text-center">
+              Keep yourself informed with the latest information on security vulnerabilities and exploits. Visit our <Link href="/exploits" className="text-indigo-400 hover:underline">Exploits Page</Link> for detailed updates and stay ahead of potential threats.
+            </p>
+            <div className="flex justify-center">
+              <button
+                onClick={navigateToExploits}
+                className="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-full shadow-md hover:from-indigo-600 hover:to-purple-700 transition-transform transform hover:scale-105"
+              >
+                Go to Exploits Page
+              </button>
+            </div>
+          </div>
+        </Tilt>
+      </div>
+      <div className="mt-8 max-w-lg w-full">
+        <Tilt
+        tiltMaxAngleX={15}
+        tiltMaxAngleY={15}
+        scale={1.05}
+        transitionSpeed={250}
+        glareEnable={true}
+        glareMaxOpacity={0.10}
+        glareColor="gray"
+        glarePosition="all"
+        glareBorderRadius="10px"
+        >
+          <div className="bg-red-600 bg-opacity-20 border border-red-500 text-white rounded-lg shadow-lg p-6">
+            <h2 className="text-2xl font-semibold mb-4 text-center">Important Updates and Announcements</h2>
+            <p className="mb-4 text-center">
+              Please visit the <Link href="/updates" className="text-red-400 hover:underline">Updates Page</Link> to learn more about the latest updates and announcements.
+            </p>
+            <div className="flex justify-center">
+              <button
+                onClick={navigateToUpdates}
+                className="inline-block bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold py-2 px-4 rounded-full shadow-md hover:from-red-600 hover:to-red-800 transition-transform transform hover:scale-105"
+              >
+                Go to Updates Page
+              </button>
+            </div>
+          </div>
+        </Tilt>
       </div>
     </div>
   );
 };
 
-export default Index;
+export default IndexPage;
