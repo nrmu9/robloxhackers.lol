@@ -26,6 +26,8 @@ static async getInitialProps(ctx: any) {
           <meta name="theme-color" content="#2d2de0" />
 
           <meta name="google-adsense-account" content="ca-pub-2235454136284515" />
+
+          <meta name='dmca-site-verification' content='NUNQM05qaVozd0JUbkpQN09DT2NQKzdGbGpmZ2lnNk56NXJGbld1Uko0VT01' />
         </Head>
         <body>
           <Main />
