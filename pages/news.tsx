@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { collection, getDocs, query, orderBy, addDoc, Timestamp, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase';
 import { useAuth } from '@/contexts/authContext';
 import Modal from '@/components/common/Modal';
 import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 type NewsItem = {
   id: string;
@@ -23,8 +24,22 @@ const News = () => {
   const [editId, setEditId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user, role } = useAuth();
+  const [renderedContents, setRenderedContents] = useState<{ [key: string]: string }>({});
 
-  const fetchNews = async () => {
+  const renderMarkdown = useCallback(async (text: string): Promise<string> => {
+    const limitText = (text: string, limit: number) => {
+      if (text.length <= limit) return text;
+      return text.substring(0, text.lastIndexOf(' ', limit)) + '...';
+    };
+
+    const limitedText = limitText(text, 200);
+    let html = marked.parse(limitedText, { gfm: true, breaks: true });
+    html = await Promise.resolve(html);
+    const sanitizedHtml = DOMPurify.sanitize(html);
+    return sanitizedHtml;
+  }, []);
+
+  const fetchNews = useCallback(async () => {
     try {
       const newsCollection = collection(db, 'news');
       const newsQuery = query(newsCollection, orderBy('date', 'desc'));
@@ -33,10 +48,17 @@ const News = () => {
         id: doc.id,
         ...doc.data()
       } as NewsItem));
-      // Separate pinned and non-pinned posts
       const pinnedNews = newsList.filter(newsItem => newsItem.pinned);
       const regularNews = newsList.filter(newsItem => !newsItem.pinned);
-      setNews([...pinnedNews, ...regularNews]); // Pinned news first
+      setNews([...pinnedNews, ...regularNews]);
+
+      // Render content for each news item
+      const renderedContents: { [key: string]: string } = {};
+      for (const item of newsList) {
+        renderedContents[item.id] = await renderMarkdown(item.content);
+      }
+      setRenderedContents(renderedContents);
+
     } catch (err) {
       const error = err as Error;
       console.error("Error fetching news: ", error.message);
@@ -44,28 +66,17 @@ const News = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [renderMarkdown]);
 
   useEffect(() => {
     fetchNews();
-  }, []);
+  }, [fetchNews]);
 
   const formatDate = (timestamp: { seconds: number; nanoseconds: number }) => {
     const date = new Date(timestamp.seconds * 1000);
     const formattedDate = date.toLocaleDateString('en-GB');
     const formattedTime = date.toLocaleTimeString('en-GB');
     return `${formattedDate} ${formattedTime}`;
-  };
-
-  const limitText = (text: string, limit: number) => {
-    if (text.length <= limit) return text;
-    return text.substring(0, text.lastIndexOf(' ', limit)) + '...';
-  };
-
-  const renderMarkdown = (text: string) => {
-    const limitedText = limitText(text, 200); // Limit to 200 characters
-    const html = marked(limitedText, { gfm: true, breaks: true });
-    return { __html: html } as { __html: string };
   };
 
   const handleAddNews = async () => {
@@ -87,7 +98,7 @@ const News = () => {
           title: newTitle,
           content: newContent,
           date: Timestamp.now(),
-          pinned: false // Default to not pinned
+          pinned: false
         });
       }
       setNewTitle('');
@@ -176,7 +187,7 @@ const News = () => {
                   </Link>
                 </h2>
                 <p className="text-gray-400 mb-2">{formatDate(newsItem.date)}</p>
-                <div className="text-white mb-4 markdown-content" dangerouslySetInnerHTML={renderMarkdown(newsItem.content)}></div>
+                <div className="text-white mb-4 markdown-content" dangerouslySetInnerHTML={{ __html: renderedContents[newsItem.id] || '' }}></div>
                 <Link href={`/news/${newsItem.id}`} className="text-blue-500 hover:underline">
                   Read more
                 </Link>

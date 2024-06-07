@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase';
 import { useAuth } from '@/contexts/authContext';
 import Select from 'react-select';
 import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 type AnnouncementProps = {
   id: string;
@@ -44,12 +45,38 @@ const customSelectStyles = {
   }),
 };
 
-const Announcement: React.FC<AnnouncementProps> = ({ id, title, message, style, createdAt, onDismiss, onEditComplete }) => {
+const Announcement: React.FC<AnnouncementProps> = ({
+  id,
+  title,
+  message,
+  style,
+  createdAt,
+  onDismiss,
+  onEditComplete,
+}) => {
   const { user, role } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedMessage, setEditedMessage] = useState(message);
-  const [editedStyle, setEditedStyle] = useState(announcementStyles.find(s => s.value === style) || announcementStyles[0]);
+  const [editedStyle, setEditedStyle] = useState(
+    announcementStyles.find((s) => s.value === style) || announcementStyles[0]
+  );
+  const [renderedContent, setRenderedContent] = useState<string>('');
+
+  const renderMarkdown = useCallback(async (text: string): Promise<string> => {
+    let html = marked.parse(text, { gfm: true, breaks: true });
+    html = await Promise.resolve(html);
+    const sanitizedHtml = DOMPurify.sanitize(html);
+    return sanitizedHtml;
+  }, []);
+
+  React.useEffect(() => {
+    const renderContent = async () => {
+      const rendered = await renderMarkdown(message);
+      setRenderedContent(rendered);
+    };
+    renderContent();
+  }, [message, renderMarkdown]);
 
   let styleClasses = 'bg-zinc-900 bg-opacity-20 border border-zinc-800';
   if (style === 'danger') styleClasses = 'bg-red-600 bg-opacity-20 border border-red-500';
@@ -78,16 +105,13 @@ const Announcement: React.FC<AnnouncementProps> = ({ id, title, message, style, 
     setIsEditing(false);
     setEditedTitle(title);
     setEditedMessage(message);
-    setEditedStyle(announcementStyles.find(s => s.value === style) || announcementStyles[0]);
-  };
-
-  const renderMarkdown = (text: string) => {
-    const html = marked(text, { gfm: true, breaks: true });
-    return { __html: html } as { __html: string };
+    setEditedStyle(announcementStyles.find((s) => s.value === style) || announcementStyles[0]);
   };
 
   return (
-    <div className={`announcement ${styleClasses} text-white rounded-lg shadow-md p-4 mb-4 relative max-w-2xl mx-auto`}>
+    <div
+      className={`announcement ${styleClasses} text-white rounded-lg shadow-md p-4 mb-4 relative max-w-2xl mx-auto`}
+    >
       {isEditing ? (
         <div>
           <div className="mb-4">
@@ -138,9 +162,11 @@ const Announcement: React.FC<AnnouncementProps> = ({ id, title, message, style, 
         </div>
       ) : (
         <div>
-          <button onClick={onDismiss} className="absolute top-2 right-2 text-xl font-bold">&times;</button>
+          <button onClick={onDismiss} className="absolute top-2 right-2 text-xl font-bold">
+            &times;
+          </button>
           <h2 className="text-2xl font-semibold mb-2">{title}</h2>
-          <div className="mb-2 markdown-content text-xs" dangerouslySetInnerHTML={renderMarkdown(message)}></div>
+          <div className="mb-2 markdown-content text-xs" dangerouslySetInnerHTML={{ __html: renderedContent }}></div>
           <span className="text-sm text-gray-300">{createdAt.toLocaleDateString()}</span>
           {role === 'admin' && (
             <div className="flex space-x-2 mt-4">

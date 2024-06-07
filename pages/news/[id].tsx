@@ -1,11 +1,11 @@
-// pages/news/[id].js
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { db } from '@/utils/firebase';
 import { doc, getDoc, updateDoc, deleteDoc, Timestamp } from 'firebase/firestore';
 import { useAuth } from '@/contexts/authContext';
 import Modal from '@/components/common/Modal';
 import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 type NewsItem = {
   id: string;
@@ -14,7 +14,7 @@ type NewsItem = {
   content: string;
 };
 
-const News = () => {
+const NewsItemPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const [newsItem, setNewsItem] = useState<NewsItem | null>(null);
@@ -23,35 +23,48 @@ const News = () => {
   const [newTitle, setNewTitle] = useState('');
   const [newContent, setNewContent] = useState('');
   const { user, role } = useAuth();
+  const [renderedContent, setRenderedContent] = useState<string>('');
 
   const formatDate = (timestamp: { seconds: number; nanoseconds?: number }) => {
     const date = new Date(timestamp.seconds * 1000);
-    const formattedDate = date.toLocaleDateString('en-GB'); // dd/mm/yyyy format
-    const formattedTime = date.toLocaleTimeString('en-GB'); // hh:mm:ss format
+    const formattedDate = date.toLocaleDateString('en-GB');
+    const formattedTime = date.toLocaleTimeString('en-GB');
     return `${formattedDate} ${formattedTime}`;
   };
 
-  const renderMarkdown = (text: string) => {
-    const html = marked(text, { gfm: true, breaks: true });
-    return { __html: html } as { __html: string };
-  };
+  const renderMarkdown = useCallback(async (text: string): Promise<string> => {
+    let html = marked.parse(text, { gfm: true, breaks: true });
+    html = await Promise.resolve(html);
+    const sanitizedHtml = DOMPurify.sanitize(html);
+    return sanitizedHtml;
+  }, []);
 
   useEffect(() => {
     if (id) {
       const fetchNewsItem = async () => {
-        const docRef = doc(db, 'news', id as string);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setNewsItem({ id: docSnap.id, ...docSnap.data() } as NewsItem);
-          setNewTitle(docSnap.data().title);
-          setNewContent(docSnap.data().content);
+        try {
+          const docRef = doc(db, 'news', id as string);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data() as NewsItem;
+            setNewsItem({ ...data });
+            setNewTitle(data.title);
+            setNewContent(data.content);
+
+            // Render content for the news item
+            const rendered = await renderMarkdown(data.content);
+            setRenderedContent(rendered);
+          }
+        } catch (error) {
+          console.error('Error fetching news item: ', error);
+        } finally {
+          setLoading(false);
         }
-        setLoading(false);
       };
 
       fetchNewsItem();
     }
-  }, [id]);
+  }, [id, renderMarkdown]);
 
   const handleEditNews = async () => {
     if (!newTitle || !newContent) {
@@ -67,6 +80,11 @@ const News = () => {
         date: Timestamp.now()
       });
       setNewsItem({ ...newsItem, title: newTitle, content: newContent, date: Timestamp.now() } as NewsItem);
+
+      // Re-render content
+      const rendered = await renderMarkdown(newContent);
+      setRenderedContent(rendered);
+
       setIsModalOpen(false);
     } catch (error) {
       console.error('Error updating news: ', error);
@@ -103,7 +121,7 @@ const News = () => {
           <h2 className="text-2xl font-semibold">{newsItem.title}</h2>
           <p className="text-gray-400">{formatDate(newsItem.date)}</p>
         </div>
-        <div className="text-white markdown-content" dangerouslySetInnerHTML={renderMarkdown(newsItem.content)}></div>
+        <div className="text-white markdown-content" dangerouslySetInnerHTML={{ __html: renderedContent }}></div>
         {role === 'admin' && (
           <div className="flex space-x-2 mt-4">
             <button
@@ -147,4 +165,4 @@ const News = () => {
   );
 };
 
-export default News;
+export default NewsItemPage;
