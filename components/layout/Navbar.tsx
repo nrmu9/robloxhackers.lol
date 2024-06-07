@@ -37,8 +37,8 @@ const Navbar: React.FC = () => {
             Exploits
             <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </Link>
-          <Link href="/updates" className="relative group">
-            Updates
+          <Link href="/news" className="relative group">
+            News
             <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </Link>
           {user ? (
@@ -80,13 +80,17 @@ const Navbar: React.FC = () => {
         </div>
       </div>
       <div className={`md:hidden overflow-hidden transition-all duration-500 ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
-  <div className="flex flex-col items-center space-y-2 py-2">
+        <div className="flex flex-col items-center space-y-2 py-2">
           <Link href="/" className="block relative group" onClick={toggleMenu}>
             Home
             <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </Link>
           <Link href="/exploits" className="block relative group" onClick={toggleMenu}>
             Exploits
+            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+          </Link>
+          <Link href="/news" className="block relative group" onClick={toggleMenu}>
+            News
             <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </Link>
           {user ? (

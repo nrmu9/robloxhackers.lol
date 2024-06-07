@@ -1,19 +1,16 @@
-import AdSense from '@/components/AdSense'
-import Document, { Html, Head, Main, NextScript } from 'next/document'
-import Script from 'next/script'
-import { Montserrat } from 'next/font/google'
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 class DocumentPage extends Document {
-static async getInitialProps(ctx: any) {
-    const initialProps = await Document.getInitialProps(ctx)
-    return { ...initialProps }
-}
+  static async getInitialProps(ctx: any) {
+    const initialProps = await Document.getInitialProps(ctx);
+    return { ...initialProps };
+  }
 
   render() {
     return (
       <Html>
         <Head>
-          <link rel="shortcut icon" href="/favicon.ico"/>
+          <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="title" content="robloxhackers.lol: Your trusted source for exploits" />
           <meta name="description" content="Looking for an exploit on all platforms? - we've got it!" />
           <meta property="og:title" content="robloxhackers.lol: Your trusted source for exploits" />
@@ -22,9 +19,7 @@ static async getInitialProps(ctx: any) {
           <meta property="og:url" content="https://robloxhackers.lol" />
           <meta property="og:image" content="https://robloxhackers.lol/CE64px.png" />
           <meta name="theme-color" content="#2d2de0" />
-
           <meta name="google-adsense-account" content="ca-pub-2235454136284515" />
-
           <meta name='dmca-site-verification' content='NUNQM05qaVozd0JUbkpQN09DT2NQKzdGbGpmZ2lnNk56NXJGbld1Uko0VT01' />
         </Head>
         <body>
@@ -32,8 +27,8 @@ static async getInitialProps(ctx: any) {
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
 
-export default DocumentPage
+export default DocumentPage;
