@@ -66,7 +66,7 @@ const IndexPage = () => {
             <div className="bg-red-600 bg-opacity-20 border border-red-500 text-white rounded-lg shadow-lg p-6">
               <h2 className="text-2xl font-semibold mb-4 text-center">Important News and Announcements</h2>
               <p className="mb-4 text-center">
-                Please visit the <Link href="/news" className="text-red-400 hover:underline">News Page</Link> to learn more about the latest news and announcements.
+                Visit the <Link href="/news" className="text-red-400 hover:underline">News Page</Link> to learn more about the latest news and announcements.
               </p>
               <div className="flex justify-center">
                 <button
