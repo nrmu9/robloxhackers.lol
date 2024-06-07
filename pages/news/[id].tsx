@@ -1,4 +1,4 @@
-// pages/updates/[id].js
+// pages/news/[id].js
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { db } from '@/utils/firebase';
@@ -7,17 +7,17 @@ import { useAuth } from '@/contexts/authContext';
 import Modal from '@/components/common/Modal';
 import { marked } from 'marked';
 
-type Update = {
+type NewsItem = {
   id: string;
   title: string;
   date: { seconds: number; nanoseconds: number };
   content: string;
 };
 
-const Update = () => {
+const News = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [update, setUpdate] = useState<Update | null>(null);
+  const [newsItem, setNewsItem] = useState<NewsItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newTitle, setNewTitle] = useState('');
@@ -38,72 +38,72 @@ const Update = () => {
 
   useEffect(() => {
     if (id) {
-      const fetchUpdate = async () => {
-        const docRef = doc(db, 'updates', id as string);
+      const fetchNewsItem = async () => {
+        const docRef = doc(db, 'news', id as string);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setUpdate({ id: docSnap.id, ...docSnap.data() } as Update);
+          setNewsItem({ id: docSnap.id, ...docSnap.data() } as NewsItem);
           setNewTitle(docSnap.data().title);
           setNewContent(docSnap.data().content);
         }
         setLoading(false);
       };
 
-      fetchUpdate();
+      fetchNewsItem();
     }
   }, [id]);
 
-  const handleEditUpdate = async () => {
+  const handleEditNews = async () => {
     if (!newTitle || !newContent) {
       alert('Please fill out all fields');
       return;
     }
 
     try {
-      const docRef = doc(db, 'updates', id as string);
+      const docRef = doc(db, 'news', id as string);
       await updateDoc(docRef, {
         title: newTitle,
         content: newContent,
         date: Timestamp.now()
       });
-      setUpdate({ ...update, title: newTitle, content: newContent, date: Timestamp.now() } as Update);
+      setNewsItem({ ...newsItem, title: newTitle, content: newContent, date: Timestamp.now() } as NewsItem);
       setIsModalOpen(false);
     } catch (error) {
-      console.error('Error updating update: ', error);
-      alert('Failed to update update');
+      console.error('Error updating news: ', error);
+      alert('Failed to update news');
     }
   };
 
-  const handleDeleteUpdate = async () => {
-    if (!confirm('Are you sure you want to delete this update?')) {
+  const handleDeleteNews = async () => {
+    if (!confirm('Are you sure you want to delete this news item?')) {
       return;
     }
 
     try {
-      const docRef = doc(db, 'updates', id as string);
+      const docRef = doc(db, 'news', id as string);
       await deleteDoc(docRef);
-      router.push('/updates');
+      router.push('/news');
     } catch (error) {
-      console.error('Error deleting update: ', error);
-      alert('Failed to delete update');
+      console.error('Error deleting news: ', error);
+      alert('Failed to delete news');
     }
   };
 
   if (loading) {
     return <p>Loading...</p>;
   }
-  if (!update) {
-    return <p>No such update found</p>;
+  if (!newsItem) {
+    return <p>No such news item found</p>;
   }
 
   return (
     <div className="container mx-auto p-4 flex justify-center">
       <div className="bg-zinc-900 bg-opacity-20 max-w-6xl p-6 rounded-lg shadow-lg">
         <div className="flex flex-col gap-y-4 mb-4">
-          <h2 className="text-2xl font-semibold">{update.title}</h2>
-          <p className="text-gray-400">{formatDate(update.date)}</p>
+          <h2 className="text-2xl font-semibold">{newsItem.title}</h2>
+          <p className="text-gray-400">{formatDate(newsItem.date)}</p>
         </div>
-        <div className="text-white markdown-content" dangerouslySetInnerHTML={renderMarkdown(update.content)}></div>
+        <div className="text-white markdown-content" dangerouslySetInnerHTML={renderMarkdown(newsItem.content)}></div>
         {role === 'admin' && (
           <div className="flex space-x-2 mt-4">
             <button
@@ -113,7 +113,7 @@ const Update = () => {
               Edit
             </button>
             <button
-              onClick={handleDeleteUpdate}
+              onClick={handleDeleteNews}
               className="py-1 px-3 rounded-lg bg-red-500 text-white hover:bg-red-700 transition duration-300"
             >
               Delete
@@ -122,7 +122,7 @@ const Update = () => {
         )}
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <h2 className="text-2xl font-semibold mb-4 text-white">Edit Update</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-white">Edit News</h2>
         <input
           type="text"
           placeholder="Title"
@@ -137,7 +137,7 @@ const Update = () => {
           className="w-full mb-2 p-2 rounded-lg bg-zinc-900 bg-opacity-20 text-white border border-zinc-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-transform duration-200 ease-in-out transform focus:scale-105"
         />
         <button
-          onClick={handleEditUpdate}
+          onClick={handleEditNews}
           className="w-full py-2 px-4 rounded-lg bg-indigo-500 text-white hover:bg-indigo-700 transition duration-300"
         >
           Update
@@ -147,4 +147,4 @@ const Update = () => {
   );
 };
 
-export default Update;
+export default News;
