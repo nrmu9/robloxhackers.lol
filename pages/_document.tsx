@@ -1,6 +1,7 @@
 import AdSense from '@/components/AdSense'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import Script from 'next/script'
+import { Montserrat } from 'next/font/google'
 
 class DocumentPage extends Document {
 static async getInitialProps(ctx: any) {
@@ -13,9 +14,6 @@ static async getInitialProps(ctx: any) {
       <Html>
         <Head>
           <link rel="shortcut icon" href="/favicon.ico"/>
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
           <meta name="title" content="robloxhackers.lol: Your trusted source for exploits" />
           <meta name="description" content="Looking for an exploit on all platforms? - we've got it!" />
           <meta property="og:title" content="robloxhackers.lol: Your trusted source for exploits" />
