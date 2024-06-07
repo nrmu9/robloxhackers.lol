@@ -426,7 +426,6 @@ const NewCard: React.FC<{ onSave: (card: CardProps | null) => void }> = ({ onSav
   };
 
   return (
-    <Tilt tiltMaxAngleX={15} tiltMaxAngleY={15} scale={1.05} transitionSpeed={250} glareEnable={true} glareMaxOpacity={0.10} glareColor='gray' glarePosition='all' glareBorderRadius='10px'>
       <EditableCard
         id=""
         name={name}
@@ -440,7 +439,6 @@ const NewCard: React.FC<{ onSave: (card: CardProps | null) => void }> = ({ onSav
         isNew={true}
         onSave={onSave}
       />
-    </Tilt>
   );
 };
 
