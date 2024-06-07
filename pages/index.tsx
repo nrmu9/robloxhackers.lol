@@ -11,8 +11,8 @@ const IndexPage = () => {
     router.push('/exploits');
   };
 
-  const navigateToUpdates = () => {
-    router.push('/updates');
+  const navigateToNews = () => {
+    router.push('/news');
   };
 
   return (
@@ -70,7 +70,7 @@ const IndexPage = () => {
               </p>
               <div className="flex justify-center">
                 <button
-                  onClick={navigateToUpdates}
+                  onClick={navigateToNews}
                   className="inline-block bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold py-2 px-4 rounded-full shadow-md hover:from-red-600 hover:to-red-800 transition-transform transform hover:scale-105"
                 >
                   Go to News Page
