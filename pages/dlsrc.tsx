@@ -24,7 +24,7 @@ const DownloadForm = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className="p-6 rounded-lg shadow-md">
+      <div className="p-6 rounded-lg shadow-md bg-gray-800">
         <h1 className="text-2xl font-bold mb-4 text-white">Download MacSploit&apos;s Source</h1>
         <p className="mb-6 text-white">Click the button below to download MacSploit&apos;s source code.</p>
         <button 
