@@ -1,9 +1,8 @@
-// pages/api/download-source.js
+import { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 import path from 'path';
 
-
-export default function handler(req: { headers: { referer: any; }; }, res: { status: (arg0: number) => { (): any; new(): any; send: { (arg0: string): void; new(): any; }; }; setHeader: (arg0: string, arg1: string) => void; send: (arg0: Buffer) => void; }) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const filePath = path.resolve('./protected-files', 'MacSploit-source.zip');
   if (!fs.existsSync(filePath)) {
     res.status(404).send('File not found');
