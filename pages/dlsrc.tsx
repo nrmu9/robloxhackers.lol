@@ -4,16 +4,22 @@ import { useRouter } from 'next/router';
 const DownloadForm = () => {
   const handleDownload = async () => {
     try {
-      const response = await fetch('/api/download-source');
-      if (response.status === 403) {
-        alert('You are not authorized to download this file.');
-        return;
+      const response = await fetch('/api/download', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'MacSploit-source.zip'; // Change the file name and extension as needed
+      a.download = 'MacSploit-source.zip';
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -23,8 +29,8 @@ const DownloadForm = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className="p-6 rounded-lg shadow-md bg-gray-800">
+    <div className="flex flex-col items-center justify-center min-h-screen text-center">
+      <div className="p-6 rounded-lg shadow-md bg-zinc-900 justify-center text-center border border-zinc-800">
         <h1 className="text-2xl font-bold mb-4 text-white">Download MacSploit&apos;s Source</h1>
         <p className="mb-6 text-white">Click the button below to download MacSploit&apos;s source code.</p>
         <button 
