@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
-    const filePath = path.resolve('.', 'protected-files/MacSploit-source.zip');
+    const filePath = path.join(process.cwd(), 'protected-files', 'MacSploit-source.zip');
     fs.readFile(filePath, (err, data) => {
       if (err) {
         return res.status(500).json({ message: 'File not found' });
