@@ -4,8 +4,8 @@ import { db } from '@/utils/firebase';
 import { doc, getDoc, updateDoc, deleteDoc, Timestamp } from 'firebase/firestore';
 import { useAuth } from '@/contexts/authContext';
 import Modal from '@/components/common/Modal';
-import { marked } from 'marked';
-import DOMPurify from 'dompurify';
+import sanitizeMarkdown from '@/utils/sanitizeMarkdown';
+import styles from '@/styles/Markdown.module.css';
 
 type NewsItem = {
   id: string;
@@ -33,10 +33,7 @@ const NewsItemPage = () => {
   };
 
   const renderMarkdown = useCallback(async (text: string): Promise<string> => {
-    let html = marked.parse(text, { gfm: true, breaks: true });
-    html = await Promise.resolve(html);
-    const sanitizedHtml = DOMPurify.sanitize(html);
-    return sanitizedHtml;
+    return sanitizeMarkdown(text);
   }, []);
 
   useEffect(() => {
@@ -121,7 +118,10 @@ const NewsItemPage = () => {
           <h2 className="text-2xl font-semibold">{newsItem.title}</h2>
           <p className="text-gray-400">{formatDate(newsItem.date)}</p>
         </div>
-        <div className="text-white markdown-content" dangerouslySetInnerHTML={{ __html: renderedContent }}></div>
+        <div
+          className={`${styles.markdownContent} text-white`}
+          dangerouslySetInnerHTML={{ __html: renderedContent }}
+        ></div>
         {role === 'admin' && (
           <div className="flex space-x-2 mt-4">
             <button

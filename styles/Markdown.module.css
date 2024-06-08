@@ -1,0 +1,89 @@
+.markdownContent {
+  padding: 0rem;
+  border-radius: 8px;
+  color: white;
+}
+
+.markdownContent h1,
+.markdownContent h2,
+.markdownContent h3,
+.markdownContent h4,
+.markdownContent h5,
+.markdownContent h6 {
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdownContent h1 {
+  font-size: 2rem;
+}
+
+.markdownContent h2 {
+  font-size: 1.75rem;
+}
+
+.markdownContent h3 {
+  font-size: 1.5rem;
+}
+
+.markdownContent h4 {
+  font-size: 1.25rem;
+}
+
+.markdownContent h5 {
+  font-size: 1rem;
+}
+
+.markdownContent h6 {
+  font-size: 0.875rem;
+}
+
+.markdownContent p {
+  margin-bottom: 1rem;
+}
+
+.markdownContent ul,
+.markdownContent ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.markdownContent ul {
+  list-style-type: disc;
+}
+
+.markdownContent ol {
+  list-style-type: decimal;
+}
+
+.markdownContent li {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdownContent a {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.markdownContent pre {
+  padding: 0rem;
+  background-color: #27272a;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.markdownContent code {
+  background-color: #27272a;
+  color: #f9fafb;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+.markdownContent blockquote {
+  border-left: 4px solid #3b82f6;
+  padding-left: 1rem;
+  color: #9ca3af;
+  margin-bottom: 1rem;
+}

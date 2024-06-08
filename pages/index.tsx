@@ -19,7 +19,7 @@ const IndexPage = () => {
     <div className="container mx-auto p-4 flex flex-col items-center">
       <div className="flex flex-col md:flex-row w-full">
         <div className="flex flex-col items-start md:w-1/2 p-6">
-          <h1 className="text-5xl font-bold mb-4">robloxhackers.lol</h1>
+        <h1 className="text-3xl md:text-5xl font-bold mb-4">robloxhackers.lol</h1>
           <p className="text-lg mb-4">
             Welcome to robloxhackers.lol, your go-to source for the latest information on security vulnerabilities, exploits, and updates. Stay ahead of potential threats and keep your knowledge up-to-date with our comprehensive resources.
           </p>

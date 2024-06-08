@@ -1,10 +1,12 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase';
 import { useAuth } from '@/contexts/authContext';
 import Select from 'react-select';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import sanitizeMarkdown from '@/utils/sanitizeMarkdown';
+import styles from '@/styles/Markdown.module.css';
 
 type AnnouncementProps = {
   id: string;
@@ -64,13 +66,11 @@ const Announcement: React.FC<AnnouncementProps> = ({
   const [renderedContent, setRenderedContent] = useState<string>('');
 
   const renderMarkdown = useCallback(async (text: string): Promise<string> => {
-    let html = marked.parse(text, { gfm: true, breaks: true });
-    html = await Promise.resolve(html);
-    const sanitizedHtml = DOMPurify.sanitize(html);
-    return sanitizedHtml;
+    const html = await sanitizeMarkdown(text);
+    return html;
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const renderContent = async () => {
       const rendered = await renderMarkdown(message);
       setRenderedContent(rendered);
@@ -166,7 +166,7 @@ const Announcement: React.FC<AnnouncementProps> = ({
             &times;
           </button>
           <h2 className="text-2xl font-semibold mb-2">{title}</h2>
-          <div className="mb-2 markdown-content text-xs" dangerouslySetInnerHTML={{ __html: renderedContent }}></div>
+          <div className={`${styles.markdownContent} mb-2 text-xs`} dangerouslySetInnerHTML={{ __html: renderedContent }}></div>
           <span className="text-sm text-gray-300">{createdAt.toLocaleDateString()}</span>
           {role === 'admin' && (
             <div className="flex space-x-2 mt-4">
