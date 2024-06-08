@@ -43,7 +43,7 @@ const DownloadSourcePage = () => {
 
   useEffect(() => {
     const referer = document.referrer;
-    const validReferer = 'https://loot-link.com/s?9c330e9882c311a2'; // Change to the actual URL of the ad redirect link
+    const validReferer = 'https://loot-link.com'; // Change to the actual URL of the ad redirect link
 
     if (!referer.startsWith(validReferer)) {
       router.push('/');
