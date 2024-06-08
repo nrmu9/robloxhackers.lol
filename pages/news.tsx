@@ -6,6 +6,8 @@ import { useAuth } from '@/contexts/authContext';
 import Modal from '@/components/common/Modal';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import sanitizeMarkdown from '@/utils/sanitizeMarkdown';
+import styles from '@/styles/Markdown.module.css';
 
 type NewsItem = {
   id: string;
@@ -187,7 +189,7 @@ const News = () => {
                   </Link>
                 </h2>
                 <p className="text-gray-400 mb-2">{formatDate(newsItem.date)}</p>
-                <div className="text-white mb-4 markdown-content" dangerouslySetInnerHTML={{ __html: renderedContents[newsItem.id] || '' }}></div>
+                <div className={`${styles.markdownContent} text-white mb-4`} dangerouslySetInnerHTML={{ __html: renderedContents[newsItem.id] || '' }}></div>
                 <Link href={`/news/${newsItem.id}`} className="text-blue-500 hover:underline">
                   Read more
                 </Link>
