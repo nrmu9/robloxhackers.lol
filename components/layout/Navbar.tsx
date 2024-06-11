@@ -1,14 +1,18 @@
+// components/common/Navbar.tsx
+
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/contexts/authContext';
 import Modal from '@/components/common/Modal';
 import AddAnnouncement from '@/components/common/AddAnnouncement';
+import DonateModal from '@/components/common/DonateModal';
 
 const Navbar: React.FC = () => {
   const { user, role, signInWithGitHub, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAnnouncementModalOpen, setAnnouncementModalOpen] = useState(false);
+  const [isDonateModalOpen, setDonateModalOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -20,6 +24,14 @@ const Navbar: React.FC = () => {
 
   const closeAnnouncementModal = () => {
     setAnnouncementModalOpen(false);
+  };
+
+  const openDonateModal = () => {
+    setDonateModalOpen(true);
+  };
+
+  const closeDonateModal = () => {
+    setDonateModalOpen(false);
   };
 
   return (
@@ -41,6 +53,10 @@ const Navbar: React.FC = () => {
             News
             <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </Link>
+          <button onClick={openDonateModal} className="relative group bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
+            Donate
+            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+          </button>
           {user ? (
             <>
               {role === 'admin' && (
@@ -93,6 +109,10 @@ const Navbar: React.FC = () => {
             News
             <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </Link>
+          <button onClick={() => { openDonateModal(); toggleMenu(); }} className="block relative group bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
+            Donate
+            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+          </button>
           {user ? (
             <>
               {role === 'admin' && (
@@ -127,6 +147,7 @@ const Navbar: React.FC = () => {
       <Modal isOpen={isAnnouncementModalOpen} onClose={closeAnnouncementModal}>
         <AddAnnouncement onClose={closeAnnouncementModal} />
       </Modal>
+      <DonateModal isOpen={isDonateModalOpen} onClose={closeDonateModal} />
     </nav>
   );
 };

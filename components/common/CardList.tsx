@@ -173,7 +173,7 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
   };
 
   return (
-    <Tilt tiltMaxAngleX={15} tiltMaxAngleY={15} scale={1.05} transitionSpeed={250} glareEnable={true} glareMaxOpacity={0.10} glareColor='gray' glarePosition='all' glareBorderRadius='10px'>
+    <Tilt tiltMaxAngleX={1} tiltMaxAngleY={1} scale={1.05} transitionSpeed={250} glareEnable={true} glareMaxOpacity={0.10} glareColor='gray' glarePosition='all' glareBorderRadius='10px'>
       <div className="card-container bg-zinc-900 bg-opacity-20 border-zinc-800 border text-white rounded-lg shadow-lg p-6 max-w-md w-full h-full transform transition-transform flex flex-col justify-between relative">
         <div className="absolute top-4 right-4">
           {isEditing ? (
@@ -493,7 +493,7 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
         <EditableCard key={card.id} {...card} canEdit={canEdit(card.id)} onSave={fetchCards} />
       ))}
       {role === 'admin' && !isAddingNew && (
-        <Tilt tiltMaxAngleX={15} tiltMaxAngleY={15} scale={1.05} transitionSpeed={250} glareEnable={true} glareMaxOpacity={0.10} glareColor='gray' glarePosition='all' glareBorderRadius='10px'>
+        <Tilt tiltMaxAngleX={1} tiltMaxAngleY={1} scale={1.05} transitionSpeed={250} glareEnable={true} glareMaxOpacity={0.10} glareColor='gray' glarePosition='all' glareBorderRadius='10px'>
           <div
             className="bg-zinc-900 bg-opacity-25 border border-zinc-800 text-white rounded-lg shadow-lg p-6 max-w-md w-full h-full transform transition-transform hover:scale-105 flex items-center justify-center cursor-pointer"
             onClick={() => setIsAddingNew(true)}

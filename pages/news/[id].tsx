@@ -125,7 +125,7 @@ const NewsItemPage = () => {
         {role === 'admin' && (
           <div className="flex space-x-2 mt-4">
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() =>  setIsModalOpen(true)}
               className="py-1 px-3 rounded-lg bg-green-500 text-white hover:bg-green-700 transition duration-300"
             >
               Edit
