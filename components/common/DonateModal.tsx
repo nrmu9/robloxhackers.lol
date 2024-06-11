@@ -30,6 +30,16 @@ const DonateModal: React.FC<DonateModalProps> = ({ isOpen, onClose }) => {
             height={1}
           />
         </form>
+        <div className="mt-4">
+          <a
+            href="https://www.roblox.com/games/5047755537/nullified#!/store"
+            target="_blank"
+            className="inline-block bg-indigo-500 text-white font-bold py-2 px-4 rounded hover:bg-indigo-700 transition-colors"
+            rel="noopener noreferrer"
+          >
+            Donate via Roblox
+          </a>
+        </div>
       </div>
     </Modal>
   );
