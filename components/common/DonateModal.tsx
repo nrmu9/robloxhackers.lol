@@ -1,4 +1,3 @@
-// components/common/DonateModal.tsx
 import React, { useState } from 'react';
 import Modal from '@/components/common/Modal';
 import Image from 'next/image';
@@ -40,43 +39,40 @@ const DonateModal: React.FC<DonateModalProps> = ({ isOpen, onClose }) => {
       <div className="text-center">
         <h2 className="text-xl font-semibold mb-4">Support Us</h2>
         <p className="mb-4">Your donations help us keep the site running and provide more content. Thank you for your support!</p>
+        <h3 className="text-lg font-semibold mb-2">PayPal Donations</h3>
+        <div className="mt-4">
         <form action="https://www.paypal.com/donate" method="post" target="_blank">
           <input type="hidden" name="hosted_button_id" value="8DTCZPN6PAZMU" />
-          <input
-            type="image"
-            src="https://www.paypalobjects.com/en_US/PL/i/btn/btn_donateCC_LG.gif"
-            name="submit"
-            title="PayPal - The safer, easier way to pay online!"
-            alt="Donate with PayPal button"
-          />
-          <Image
-            alt=""
-            src="https://www.paypal.com/en_PL/i/scr/pixel.gif"
-            width={1}
-            height={1}
-          />
-        </form>
-        <div className="mt-4">
-          <a
-            href="https://www.roblox.com/games/5047755537/nullified#!/store"
-            target="_blank"
-            className="inline-block bg-indigo-500 text-white font-bold py-2 px-4 rounded hover:bg-indigo-700 transition-colors"
-            rel="noopener noreferrer"
+          <button
+            type="submit"
+            className="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-full shadow-md hover:from-indigo-600 hover:to-purple-700 transition-transform transform hover:scale-105"
           >
-            Donate via Roblox
-          </a>
+            Donate via PayPal
+          </button>
+        </form>
+        </div>
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold mb-3">Robux Donations</h3>
+          <a
+              href="https://www.roblox.com/games/5047755537/nullified#!/store"
+              target="_blank"
+              className="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-full shadow-md hover:from-indigo-600 hover:to-purple-700 transition-transform transform hover:scale-105"
+              rel="noopener noreferrer"
+            >
+              Donate via Roblox
+            </a>
         </div>
         <div className="mt-4">
           <h3 className="text-lg font-semibold mb-2">Crypto Donations</h3>
           {cryptoDonations.map(({ name, address }, index) => (
             <div key={name} className="flex items-center justify-between mb-2">
-              <span className="text-sm break-all flex-grow text-left">{name}: {address}</span>
+              <span className="text-sm break-all flex-grow text-left line-clamp-1 my-2">{name}: {address}</span>
               <button
                 onClick={() => copyToClipboard(index, address)}
-                className="ml-2 text-blue-500 underline text-sm"
+                className="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-1 px-2 rounded-full shadow-md hover:from-indigo-600 hover:to-purple-700 transition-transform transform hover:scale-105"
                 style={{ minWidth: '100px' }}
               >
-                {copiedAddress[index] ? 'Copied!' : 'Copy Address'}
+                {copiedAddress[index] ? 'Copied!' : 'Copy'}
               </button>
             </div>
           ))}
