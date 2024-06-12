@@ -190,7 +190,7 @@ const News = () => {
                 </h2>
                 <p className="text-gray-400 mb-2">{formatDate(newsItem.date)}</p>
                 <div className={`${styles.markdownContent} text-white mb-4`} dangerouslySetInnerHTML={{ __html: renderedContents[newsItem.id] || '' }}></div>
-                <Link href={`/news/${newsItem.id}`} className="text-blue-500 hover:underline">
+                <Link href={`/news/${newsItem.id}`} className="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-2 px-3 rounded-full shadow-md hover:from-indigo-600 hover:to-purple-700 transition-transform transform hover:scale-105">
                   Read more
                 </Link>
                 {role === 'admin' && (

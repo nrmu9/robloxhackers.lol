@@ -165,7 +165,7 @@ const Announcement: React.FC<AnnouncementProps> = ({
           <button onClick={onDismiss} className="absolute top-2 right-2 text-xl font-bold">
             &times;
           </button>
-          <h2 className="text-2xl font-semibold mb-2">{title}</h2>
+          <h2 className="text-2xl font-semibold my-2">{title}</h2>
           <div className={`${styles.markdownContent} mb-2 text-xs`} dangerouslySetInnerHTML={{ __html: renderedContent }}></div>
           <span className="text-sm text-gray-300">{createdAt.toLocaleDateString()}</span>
           {role === 'admin' && (
