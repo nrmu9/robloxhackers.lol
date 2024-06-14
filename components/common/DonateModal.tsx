@@ -39,10 +39,10 @@ const DonateModal: React.FC<DonateModalProps> = ({ isOpen, onClose }) => {
       <div className="text-center">
         <h2 className="text-xl font-semibold mb-4">Support Us</h2>
         <p className="mb-4">Your donations help us keep the site running and provide more content. Thank you for your support!</p>
-        <h3 className="text-lg font-semibold mb-2">PayPal Donations</h3>
+        <h3 className="text-lg font-semibold mb-2">PayPal Donations (hosting donations)</h3>
         <div className="mt-4">
         <form action="https://www.paypal.com/donate" method="post" target="_blank">
-          <input type="hidden" name="hosted_button_id" value="8DTCZPN6PAZMU" />
+          <input type="hidden" name="hosted_button_id" value="9KYQDB8Z5YHFJ" />
           <button
             type="submit"
             className="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-full shadow-md hover:from-indigo-600 hover:to-purple-700 transition-transform transform hover:scale-105"
@@ -52,7 +52,7 @@ const DonateModal: React.FC<DonateModalProps> = ({ isOpen, onClose }) => {
         </form>
         </div>
         <div className="mt-4">
-          <h3 className="text-lg font-semibold mb-3">Robux Donations</h3>
+          <h3 className="text-lg font-semibold mb-3">Robux Donations (developer donations)</h3>
           <a
               href="https://www.roblox.com/games/5047755537/nullified#!/store"
               target="_blank"
@@ -63,7 +63,7 @@ const DonateModal: React.FC<DonateModalProps> = ({ isOpen, onClose }) => {
             </a>
         </div>
         <div className="mt-4">
-          <h3 className="text-lg font-semibold mb-2">Crypto Donations</h3>
+          <h3 className="text-lg font-semibold mb-2">Crypto Donations (developer donations)</h3>
           {cryptoDonations.map(({ name, address }, index) => (
             <div key={name} className="flex items-center justify-between mb-2">
               <span className="text-sm break-all flex-grow text-left line-clamp-1 my-2">{name}: {address}</span>
