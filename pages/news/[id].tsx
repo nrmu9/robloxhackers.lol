@@ -113,19 +113,19 @@ const NewsItemPage = () => {
 
   return (
     <div className="container mx-auto p-4 flex justify-center">
-      <div className="bg-zinc-900 bg-opacity-20 max-w-6xl p-6 rounded-lg shadow-lg">
+      <div className="bg-zinc-900 bg-opacity-20 max-w-6xl p-6 rounded-lg shadow-lg w-full">
         <div className="flex flex-col gap-y-4 mb-4">
           <h2 className="text-2xl font-semibold">{newsItem.title}</h2>
           <p className="text-gray-400">{formatDate(newsItem.date)}</p>
         </div>
         <div
-          className={`${styles.markdownContent} text-white`}
+          className={`${styles.markdownContent} text-white overflow-x-auto break-words`}
           dangerouslySetInnerHTML={{ __html: renderedContent }}
         ></div>
         {role === 'admin' && (
           <div className="flex space-x-2 mt-4">
             <button
-              onClick={() =>  setIsModalOpen(true)}
+              onClick={() => setIsModalOpen(true)}
               className="py-1 px-3 rounded-lg bg-green-500 text-white hover:bg-green-700 transition duration-300"
             >
               Edit
