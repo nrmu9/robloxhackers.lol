@@ -5,6 +5,8 @@ import Select from 'react-select';
 import Tilt from 'react-parallax-tilt';
 import { db } from '../../utils/firebase';
 import { useAuth } from '../../contexts/authContext';
+import ReactTooltip from 'react-tooltip';
+
 
 type ButtonProps = [string, string];
 
@@ -25,10 +27,11 @@ type CardListProps = {
 };
 
 const platformOptions = [
-  { value: '/Android.png', label: 'Android' },
-  { value: '/IOS.png', label: 'iOS' },
-  { value: '/MacOS.png', label: 'MacOS' },
   { value: '/Windows.png', label: 'Windows' },
+  { value: '/Cracked Green.png', label: 'Green Cracked' },
+  { value: '/Cracked Orange.png', label: 'Orange Cracked' },
+  { value: '/Cracked Red.png', label: 'Red Cracked' },
+  { value: '/Key Purple.png', label: 'Purple Key' },
 ];
 
 const customStyles = {

@@ -31,6 +31,7 @@
     "react-parallax-tilt": "^1.7.227",
     "react-router-dom": "^6.23.1",
     "react-select": "^5.8.0",
+    "react-tooltip": "^5.27.1",
     "sharp": "^0.33.4",
     "styled-components": "^6.1.11",
     "tailwind-scrollbar": "^3.1.0",
