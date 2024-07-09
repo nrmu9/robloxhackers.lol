@@ -450,7 +450,8 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
   const canEdit = (cardId: string) => {
     if (!user) return false;
     if (role === 'admin') return true;
-    if (role === 'editor' && editableCards) {
+    if (role === 'editor-rblx') return true; // Allow editor-cs2 to edit all cards
+    if (role === 'editor-rblx' && editableCards) {
       return editableCards.includes(cardId);
     }
     return false;
