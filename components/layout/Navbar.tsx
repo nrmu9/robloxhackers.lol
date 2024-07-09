@@ -40,17 +40,21 @@ const Navbar: React.FC = () => {
         <div className="flex items-center text-lg font-semibold space-x-2">
           <Image src="/CE64px.png" alt="RobloxHackers Icon" width={24} height={24} />
           <Link href="/" className="font-bold relative group">
-            r/robloxhackers
+            robloxhackers.lol
             <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </Link>
         </div>
         <div className="hidden md:flex space-x-6 items-center">
-          <Link href="/exploits" className="relative group">
-            Exploits
-            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-          </Link>
           <Link href="/news" className="relative group">
             News
+            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+          </Link>
+          <Link href="/exploits" className="relative group">
+            Roblox Exploits
+            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+          </Link>
+          <Link href="/Counter-Strike-2" className="relative group">
+            Counter-Strike 2
             <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </Link>
           <button onClick={openDonateModal} className="relative group bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
