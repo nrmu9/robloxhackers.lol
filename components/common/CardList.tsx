@@ -29,6 +29,7 @@ const platformOptions = [
   { value: '/IOS.png', label: 'iOS' },
   { value: '/MacOS.png', label: 'MacOS' },
   { value: '/Windows.png', label: 'Windows' },
+  { value: '/Key Purple.png', label: 'Purple Key' },
 ];
 
 const customStyles = {
