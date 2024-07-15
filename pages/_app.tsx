@@ -34,7 +34,7 @@ function App({ Component, pageProps }: AppProps) {
     return (
         <AuthProvider>
             <Head>
-                <title>r/robloxhackers</title>
+                <title>robloxhackers.lol</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             </Head>
             <Layout>

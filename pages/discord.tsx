@@ -5,7 +5,7 @@ const DiscordPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('https://discord.gg/sfire010s-repair-shop-1017434357314617424');
+    router.push('https://discord.com/invite/Byfrons-repair-shop-1017434357314617424');
   }, [router]);
 
   return null;
