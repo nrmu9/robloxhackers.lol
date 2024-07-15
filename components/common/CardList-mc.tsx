@@ -5,6 +5,8 @@ import Select from 'react-select';
 import Tilt from 'react-parallax-tilt';
 import { db } from '../../utils/firebase';
 import { useAuth } from '../../contexts/authContext';
+import ReactTooltip from 'react-tooltip';
+
 
 type ButtonProps = [string, string];
 
@@ -25,12 +27,13 @@ type CardListProps = {
 };
 
 const platformOptions = [
-  { value: '/Android.png', label: 'Android' },
-  { value: '/IOS.png', label: 'iOS' },
-  { value: '/MacOS.png', label: 'MacOS' },
   { value: '/Windows.png', label: 'Windows' },
-  { value: '/Serverside.png', label: 'Serverside' },
+  { value: '/Cracked Green.png', label: 'Green Cracked' },
+  { value: '/Cracked Orange.png', label: 'Orange Cracked' },
+  { value: '/Cracked Red.png', label: 'Red Cracked' },
   { value: '/Key Purple.png', label: 'Purple Key' },
+  { value: '/Bedrock.png', label: 'Bedrock Icon' },
+  { value: '/Dirt Block.png', label: 'Java Icon' },
 ];
 
 const customStyles = {
@@ -124,10 +127,10 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
             button: [editedButtonLabel, editedButtonLink],
             lastEditedBy: user?.displayName || 'unknown',
           };
-          const docRef = await addDoc(collection(db, 'cards'), newCard);
+          const docRef = await addDoc(collection(db, 'cards-mc'), newCard);
           onSave?.({ ...newCard, id: docRef.id });
         } else {
-          await updateDoc(doc(db, 'cards', id), {
+          await updateDoc(doc(db, 'cards-mc', id), {
             name: editedName,
             platform: editedPlatformIcons,
             pros: editedPros,
@@ -401,7 +404,7 @@ const NewCard: React.FC<{ onSave: (card: CardProps | null) => void }> = ({ onSav
         lastEditedBy: user?.displayName || 'unknown',
       };
       try {
-        const docRef = await addDoc(collection(db, 'cards'), newCard);
+        const docRef = await addDoc(collection(db, 'cards-mc'), newCard);
         onSave({ ...newCard, id: docRef.id });
         setIsEditing(false);
       } catch (error) {
@@ -452,15 +455,15 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
   const canEdit = (cardId: string) => {
     if (!user) return false;
     if (role === 'admin') return true;
-    if (role === 'editor-rblx') return true; // Allow editor-cs2 to edit all cards
-    if (role === 'editor-rblx' && editableCards) {
+    if (role === 'editor-mc') return true; 
+    if (role === 'editor-mc' && editableCards) {
       return editableCards.includes(cardId);
     }
     return false;
   };
 
   const fetchCards = async () => {
-    const querySnapshot = await getDocs(collection(db, 'cards'));
+    const querySnapshot = await getDocs(collection(db, 'cards-mc'));
     const updatedCards: CardProps[] = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();
