@@ -32,8 +32,9 @@ const IndexPage = () => {
           <div className="text-left mb-4 ml-6">
             <h2 className="text-3xl md:text-5xl font-bold mb-4">Game Selection</h2>
             <p className="text-lg mb-4">
-              Enhance your gaming experience with a variety of cheats and exploits! The Minecraft and Counter-Strike 2 pages are managed by our experienced contributors who are knowledgeable in their field.
+              Enhance your gaming experience with a variety of cheats and exploits! The <span className="text-blue-500 glow">Counter-Strike</span> and <span className="text-green-500 glow">Minecraft</span> pages are managed by our experienced contributors who are knowledgeable in their field.
             </p>
+            <p className="text-red-500">NEW - might find misinformation for Counter-Strike 2 & Minecraft only</p>
           </div>
           <div className="flex flex-wrap justify-center gap-4">
             <div className="w-40 h-40 md:w-48 md:h-48">
@@ -99,6 +100,11 @@ const IndexPage = () => {
           </div>
         </div>
       </div>
+      <style jsx>{`
+        .glow {
+          text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        }
+      `}</style>
     </div>
   );
 };
