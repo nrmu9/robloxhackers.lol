@@ -27,13 +27,10 @@ type CardListProps = {
 };
 
 const platformOptions = [
-  { value: '/Windows.png', label: 'Windows' },
-  { value: '/Cracked Green.png', label: 'Green Cracked' },
-  { value: '/Cracked Orange.png', label: 'Orange Cracked' },
-  { value: '/Cracked Red.png', label: 'Red Cracked' },
-  { value: '/Key Purple.png', label: 'Purple Key' },
   { value: '/Bedrock.png', label: 'Bedrock Icon' },
   { value: '/Dirt Block.png', label: 'Java Icon' },
+  { value: '/Blatant TNT.png', label: 'Blatant Client' },
+  { value: '/Ghost Glass.png', label: 'Ghost Client' },
 ];
 
 const customStyles = {

@@ -110,7 +110,15 @@ const Navbar: React.FC = () => {
             <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </Link>
           <Link href="/exploits" className="block relative group" onClick={toggleMenu}>
-            Exploits
+            Roblox
+            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+          </Link>
+          <Link href="/minecraft" className="block relative group" onClick={toggleMenu}>
+            Minecraft
+            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+          </Link>
+          <Link href="/cs2" className="block relative group" onClick={toggleMenu}>
+            Counter-Strike 2
             <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </Link>
           <Link href="/news" className="block relative group" onClick={toggleMenu}>
