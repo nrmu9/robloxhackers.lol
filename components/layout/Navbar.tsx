@@ -45,20 +45,12 @@ const Navbar: React.FC = () => {
           </Link>
         </div>
         <div className="hidden md:flex space-x-6 items-center">
+        <Link href="/" className="relative group">
+            Games
+            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+          </Link>
           <Link href="/news" className="relative group">
             News
-            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-          </Link>
-          <Link href="/exploits" className="relative group">
-            Roblox
-            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-          </Link>
-          <Link href="/Counter-Strike-2" className="relative group">
-            Counter-Strike 2
-            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-          </Link>
-          <Link href="/minecraft" className="relative group">
-            Minecraft
             <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </Link>
           <button onClick={openDonateModal} className="relative group bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
@@ -106,19 +98,7 @@ const Navbar: React.FC = () => {
       <div className={`md:hidden overflow-hidden transition-all duration-500 ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
         <div className="flex flex-col items-center space-y-2 py-2">
           <Link href="/" className="block relative group" onClick={toggleMenu}>
-            Home
-            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-          </Link>
-          <Link href="/exploits" className="block relative group" onClick={toggleMenu}>
-            Roblox
-            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-          </Link>
-          <Link href="/minecraft" className="block relative group" onClick={toggleMenu}>
-            Minecraft
-            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-          </Link>
-          <Link href="/cs2" className="block relative group" onClick={toggleMenu}>
-            Counter-Strike 2
+           Games
             <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </Link>
           <Link href="/news" className="block relative group" onClick={toggleMenu}>

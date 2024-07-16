@@ -6,13 +6,13 @@ const SocialsCard: React.FC = () => {
   const socials = [
     {
       name: 'Reddit',
-      link: 'https://www.reddit.com',
+      link: 'https://www.reddit.com/r/robloxhackers',
       imagePath: '/Reddit.png',
-      description: 'Join our Reddit community for the latest updates and discussions.',
+      description: "Reddit's #1 ROBLOX Exploiting community!",
     },
     {
       name: 'Discord',
-      link: 'https://discord.com',
+      link: 'https://robloxhackers.lol/discord',
       imagePath: '/Discord.png',
       description: 'Join our Discord server to chat with other members in real-time.',
     },
