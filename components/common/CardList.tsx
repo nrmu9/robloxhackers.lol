@@ -27,7 +27,7 @@ type CardListProps = {
 const platformOptions = [
   { value: '/Android.png', label: 'Android' },
   { value: '/IOS.png', label: 'iOS' },
-  { value: '/MacOS.png', label: 'MacOS' },
+  { value: '/MacOS.png', label: 'macOS' },
   { value: '/Windows.png', label: 'Windows' },
   { value: '/Serverside.png', label: 'Serverside' },
   { value: '/Key Purple.png', label: 'Purple Key' },

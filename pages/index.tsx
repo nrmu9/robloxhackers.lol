@@ -1,18 +1,21 @@
 import React from 'react';
 import SocialsCard from '@/components/SocialsCard';
 import Tilt from 'react-parallax-tilt';
+import { useRouter } from 'next/router'; // Import the router
 
 const IndexPage = () => {
+  const router = useRouter(); // Initialize the router
+
   const handleMinecraftClick = () => {
-    window.open('/minecraft', '_blank'); // Replace with your actual Minecraft page link
+    router.push('/minecraft'); // Navigate within the same tab
   };
 
   const handleRobloxClick = () => {
-    window.open('/exploits', '_blank'); // Replace with your actual Roblox page link
+    router.push('/exploits'); // Navigate within the same tab
   };
 
   const handleCounterStrikeClick = () => {
-    window.open('/cs2', '_blank'); // Replace with your actual Counter-Strike page link
+    router.push('/cs2'); // Navigate within the same tab
   };
 
   return (
@@ -29,7 +32,7 @@ const IndexPage = () => {
           <div className="text-left mb-4 ml-6">
             <h2 className="text-3xl md:text-5xl font-bold mb-4">Game selection</h2>
             <p className="text-lg mb-4">
-            Enhance your gaming experience with a variety of cheats and exploits! The Minecraft and Counter-Strike 2 pages are managed by our experienced contributors who are knowledgeable in their field.
+              Enhance your gaming experience with a variety of cheats and exploits! The Minecraft and Counter-Strike 2 pages are managed by our experienced contributors who are knowledgeable in their field.
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-4">
@@ -39,7 +42,7 @@ const IndexPage = () => {
                   className="bg-gray-800 rounded-lg overflow-hidden cursor-pointer"
                   tiltMaxAngleX={15}
                   tiltMaxAngleY={15}
-                  scale={1.05} // Inase scale for slightly bigger cards
+                  scale={1.05} // Increase scale for slightly bigger cards
                   transitionSpeed={250}
                   glareEnable={true}
                   glareMaxOpacity={0.1}
@@ -48,7 +51,7 @@ const IndexPage = () => {
                   glareBorderRadius="10px"
                 >
                   <div className="w-full h-full flex items-center justify-center">
-                    <img src="/cs2-index.png" alt="CS" className="w-full h-full object-cover"/>
+                    <img src="/cs2-index.png" alt="CS" className="w-full h-full object-cover" />
                   </div>
                 </Tilt>
               </div>
@@ -68,7 +71,7 @@ const IndexPage = () => {
                   glareBorderRadius="10px"
                 >
                   <div className="w-full h-full flex items-center justify-center">
-                    <img src="/mc-index.png" alt="Minecraft" className="w-full h-full object-cover"/>
+                    <img src="/mc-index.png" alt="Minecraft" className="w-full h-full object-cover" />
                   </div>
                 </Tilt>
               </div>
@@ -88,7 +91,7 @@ const IndexPage = () => {
                   glareBorderRadius="10px"
                 >
                   <div className="w-full h-full flex items-center justify-center">
-                    <img src="/rblx-index.png" alt="Roblox" className="w-full h-full object-cover"/>
+                    <img src="/rblx-index.png" alt="Roblox" className="w-full h-full object-cover" />
                   </div>
                 </Tilt>
               </div>
