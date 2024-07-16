@@ -30,7 +30,7 @@ const IndexPage = () => {
         </div>
         <div className="md:w-1/2 flex flex-col items-center mt-8 md:mt-0">
           <div className="text-left mb-4 ml-6">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">Game selection</h2>
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">Game Selection</h2>
             <p className="text-lg mb-4">
               Enhance your gaming experience with a variety of cheats and exploits! The Minecraft and Counter-Strike 2 pages are managed by our experienced contributors who are knowledgeable in their field.
             </p>

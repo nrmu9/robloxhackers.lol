@@ -31,6 +31,9 @@ const platformOptions = [
   { value: '/Dirt Block.png', label: 'Java Icon' },
   { value: '/Blatant TNT.png', label: 'Blatant Client' },
   { value: '/Ghost Glass.png', label: 'Ghost Client' },
+  { value: '/linux-chicken.png', label: 'Linux' },
+  { value: '/cyan windows.png', label: 'Windows' },
+  { value: '/mc-apple.png', label: 'macOS' },
 ];
 
 const customStyles = {
