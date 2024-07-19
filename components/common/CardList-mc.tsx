@@ -240,7 +240,7 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
         <div className="flex-grow mb-4 text-left">
           {(isEditing || editedPros.length > 0) && (
             <div className="mb-2 mx-4">
-              <h3 className="text-green-400 font-semibold">Pros:</h3>
+              <h3 className="text-green-400 font-semibold">About:</h3>
               {editedPros.map((pro, index) => (
                 <div key={index} className="flex items-center">
                   {isEditing ? (
@@ -269,14 +269,14 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
               ))}
               {isEditing && (
                 <button onClick={() => setEditedPros([...editedPros, ''])} className="text-green-400 mt-2">
-                  + Add Pro
+                  + Add About
                 </button>
               )}
             </div>
           )}
           {(isEditing || editedNeutral.length > 0) && (
             <div className="mb-2 mx-4">
-              <h3 className="text-yellow-400 font-semibold">Neutral:</h3>
+              <h3 className="text-blue-400 font-semibold">Installation:</h3>
               {editedNeutral.map((item, index) => (
                 <div key={index} className="flex items-center">
                   {isEditing ? (
@@ -294,7 +294,7 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
                       <button onClick={() => {
                         const newNeutral = editedNeutral.filter((_, i) => i !== index);
                         setEditedNeutral(newNeutral);
-                      }} className="text-red-400 ml-2">
+                      }} className="text-blue-400 ml-2">
                         ×
                       </button>
                     </>
@@ -304,15 +304,15 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
                 </div>
               ))}
               {isEditing && (
-                <button onClick={() => setEditedNeutral([...editedNeutral, ''])} className="text-yellow-400 mt-2">
-                  + Add Neutral
+                <button onClick={() => setEditedNeutral([...editedNeutral, ''])} className="text-blue-400 mt-2">
+                  + Add Installation
                 </button>
               )}
             </div>
           )}
           {(isEditing || editedCons.length > 0) && (
             <div className="mb-2 mx-4">
-              <h3 className="text-red-400 font-semibold">Cons:</h3>
+              <h3 className="text-gray-400 font-semibold">Version:</h3>
               {editedCons.map((con, index) => (
                 <div key={index} className="flex items-center">
                   {isEditing ? (
@@ -330,7 +330,7 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
                       <button onClick={() => {
                         const newCons = editedCons.filter((_, i) => i !== index);
                         setEditedCons(newCons);
-                      }} className="text-red-400 ml-2">
+                      }} className="text-grey-400 ml-2">
                         ×
                       </button>
                     </>
@@ -341,7 +341,7 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
               ))}
               {isEditing && (
                 <button onClick={() => setEditedCons([...editedCons, ''])} className="text-red-400 mt-2">
-                  + Add Con
+                  + Add Version
                 </button>
               )}
             </div>
