@@ -53,10 +53,6 @@ const Navbar: React.FC = () => {
             News
             <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </Link>
-          <button onClick={openDonateModal} className="relative group bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
-            Donate
-            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-          </button>
           {user ? (
             <>
               {role === 'admin' && (
@@ -105,10 +101,6 @@ const Navbar: React.FC = () => {
             News
             <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </Link>
-          <button onClick={() => { openDonateModal(); toggleMenu(); }} className="block relative group bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
-            Donate
-            <span className="absolute left-0 bottom-0 w-full h-[2px] bg-indigo-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-          </button>
           {user ? (
             <>
               {role === 'admin' && (
