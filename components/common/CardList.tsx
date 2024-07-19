@@ -8,6 +8,20 @@ import { useAuth } from '../../contexts/authContext';
 
 type ButtonProps = [string, string];
 
+type TooltipProps = {
+  text: string;
+  children: React.ReactNode;
+};
+
+const Tooltip: React.FC<TooltipProps> = ({ text, children }) => (
+  <div className="relative group inline-block">
+    {children}
+    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-2 py-1 text-sm text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      {text}
+    </div>
+  </div>
+);
+
 type CardProps = {
   id: string;
   name: string;
@@ -25,13 +39,14 @@ type CardListProps = {
 };
 
 const platformOptions = [
-  { value: '/Android.png', label: 'Android' },
-  { value: '/IOS.png', label: 'iOS' },
-  { value: '/MacOS.png', label: 'macOS' },
-  { value: '/Windows.png', label: 'Windows' },
-  { value: '/Serverside.png', label: 'Serverside' },
-  { value: '/Key Purple.png', label: 'Purple Key' },
+  { value: '/Android.png', label: 'Android', text: 'Android - Supports Android' },
+  { value: '/IOS.png', label: 'iOS', text: 'iOS - Supports iOS' },
+  { value: '/MacOS.png', label: 'macOS', text: 'macOS - Supports macOS' },
+  { value: '/Windows.png', label: 'Windows', text: 'Windows - Supports Windows' },
+  { value: '/Serverside.png', label: 'Serverside', text: "Serverside - Exploit that has access to the server" },
+  { value: '/Key Purple.png', label: 'Purple Key', text: 'Keysystem - Complete tasks to earn a time-limited exploit key' },
 ];
+
 
 const customStyles = {
   control: (provided: any, state: any) => ({
@@ -190,10 +205,22 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
             />
           ) : (
             <div className="flex space-x-2">
-              {editedPlatformIcons.map((imagePath: string, index: number) => (
-                <Image key={index} src={imagePath} alt="Platform" width={24} height={24} />
-              ))}
-            </div>
+              {editedPlatformIcons.map((imagePath: string, index: number) => {
+                const platformOption = platformOptions.find(option => option.value === imagePath);
+                const platformLabel = platformOption?.text || 'Unknown';
+                return (
+                  <Tooltip key={index} text={platformLabel}>
+                    <Image
+                      src={imagePath}
+                      alt={platformLabel}
+                      width={24}
+                      height={24}
+                      className="cursor-pointer"
+                    />
+                  </Tooltip>
+                );
+            })}
+          </div>
           )}
         </div>
         <div className="flex-grow">
