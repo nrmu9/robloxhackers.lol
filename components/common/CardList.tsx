@@ -21,7 +21,9 @@ const InfoCard: React.FC = () => {
     </div>
   );
 };
-
+const isTouchDevice = () => {
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+};
 
 
 const Tooltip: React.FC<TooltipProps> = ({ text, children }) => (
@@ -57,7 +59,6 @@ const platformOptions = [
   { value: '/Serverside.png', label: 'Serverside', text: "Serverside - Exploit that has access to the server", dropdowntext: 'Serverside' },
   { value: '/Key Purple.png', label: 'Purple Key', text: 'Keysystem - Complete tasks to earn a time-limited exploit key', dropdowntext: 'Keysystem' },
 ];
-
 
 
 const customStyles = {
@@ -197,11 +198,10 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
     }
   };
 
-const handlePlatformChange = (selectedOptions: any) => {
+  const handlePlatformChange = (selectedOptions: any) => {
     const selectedPlatforms = selectedOptions.map((option: any) => option.value);
-    setSelectedPlatforms(selectedPlatforms);
-};
-
+    setEditedPlatformIcons(selectedPlatforms);
+  };
 
   
 
@@ -502,7 +502,7 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
   const canEdit = (cardId: string) => {
     if (!user) return false;
     if (role === 'admin') return true;
-    if (role === 'editor-rblx') return true; // Allow editor-cs2 to edit all cards
+    if (role === 'editor-rblx') return true; // Allow editor-rbblx to edit all cards
     if (role === 'editor-rblx' && editableCards) {
       return editableCards.includes(cardId);
     }
@@ -513,28 +513,25 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
     const querySnapshot = await getDocs(collection(db, 'cards'));
     let updatedCards: CardProps[] = [];
     querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        updatedCards.push({
-            id: doc.id,
-            name: data.name,
-            platform: data.platform,
-            pros: data.pros,
-            neutral: data.neutral,
-            cons: data.cons,
-            button: data.button,
-            lastEditedBy: data.lastEditedBy,
-        });
+      const data = doc.data();
+      updatedCards.push({
+        id: doc.id,
+        name: data.name,
+        platform: data.platform,
+        pros: data.pros,
+        neutral: data.neutral,
+        cons: data.cons,
+        button: data.button,
+        lastEditedBy: data.lastEditedBy,
+      });
     });
-
     if (selectedPlatforms.length > 0) {
-        updatedCards = updatedCards.filter(card =>
-            selectedPlatforms.every(platform => card.platform.includes(platform))
-        );
+      updatedCards = updatedCards.filter(card =>
+        card.platform.some(platform => selectedPlatforms.includes(platform))
+      );
     }
-
     setCardList(updatedCards);
-};
-
+  };
 
   const handleSaveNewCard = (newCard: CardProps | null) => {
     if (newCard) {
@@ -543,6 +540,12 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
     setIsAddingNew(false);
     fetchCards();
   };
+
+  type TooltipProps = {
+    text: string;
+    children: React.ReactNode;
+  };
+  
 
   useEffect(() => {
     fetchCards();

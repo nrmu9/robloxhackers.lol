@@ -13,6 +13,7 @@ type TooltipProps = {
   children: React.ReactNode;
 };
 
+
 const InfoCard: React.FC = () => {
   return (
     <div className="bg-[#0c0c0e] border-[#27272a] border text-white rounded-lg shadow-lg p-4 mb-4 shadow-yellow-glow">
@@ -22,6 +23,11 @@ const InfoCard: React.FC = () => {
   );
 };
 
+
+
+const isTouchDevice = () => {
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+};
 
 
 const Tooltip: React.FC<TooltipProps> = ({ text, children }) => (
@@ -49,6 +55,7 @@ type CardListProps = {
   canEdit: (cardId: string) => boolean;
 };
 
+
 const platformOptions = [
   { value: '/Bedrock.png', label: 'Bedrock Icon', text: 'Minecraft Bedrock', dropdowntext: 'Minecraft Bedrock' },
   { value: '/Dirt Block.png', label: 'Java Icon', text: 'Minecraft Java', dropdowntext: 'Minecraft Java' },
@@ -63,8 +70,8 @@ const platformOptions = [
 const customStyles = {
   control: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: '#0c0c0e', // Background color for the control (input box)
-    borderColor: state.isFocused ? '#27272a' : '#27272a', // Border color for the control
+    backgroundColor: '#0c0c0e',
+    borderColor: state.isFocused ? '#27272a' : '#27272a',
     color: 'white',
     '&:hover': {
       borderColor: '#3B3B3F',
@@ -73,12 +80,12 @@ const customStyles = {
   }),
   menu: (provided: any) => ({
     ...provided,
-    backgroundColor: '#0c0c0e', // Background color for the dropdown menu
+    backgroundColor: '#0c0c0e',
     borderColor: '#27272a',
   }),
   option: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: state.isSelected ? '#151517' : state.isFocused ? '#151517' : '#151517', // Background color for selected or focused option
+    backgroundColor: state.isSelected ? '#151517' : state.isFocused ? '#151517' : '#151517',
     color: 'white',
     '&:hover': {
       backgroundColor: '#27272a',
@@ -133,11 +140,15 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
   const [editedButtonLabel, setEditedButtonLabel] = useState(button[0]);
   const [editedButtonLink, setEditedButtonLink] = useState(button[1]);
   const { user } = useAuth();
+
+  const handlePlatformChange = (selectedOptions: any) => {
+    const selectedPlatformValues = selectedOptions.map((option: any) => option.value);
+    setEditedPlatformIcons(selectedPlatformValues);
+  };
+
   const handleEdit = () => {
     setIsEditing(true);
   };
-
-const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
 
   const handleConfirm = async () => {
     if (window.confirm('Are you sure you want to update this card?')) {
@@ -197,11 +208,7 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
     }
   };
 
-const handlePlatformChange = (selectedOptions: any) => {
-    const selectedPlatforms = selectedOptions.map((option: any) => option.value);
-    setSelectedPlatforms(selectedPlatforms);
-};
-
+  
 
   
 
@@ -513,28 +520,25 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
     const querySnapshot = await getDocs(collection(db, 'cards-mc'));
     let updatedCards: CardProps[] = [];
     querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        updatedCards.push({
-            id: doc.id,
-            name: data.name,
-            platform: data.platform,
-            pros: data.pros,
-            neutral: data.neutral,
-            cons: data.cons,
-            button: data.button,
-            lastEditedBy: data.lastEditedBy,
-        });
+      const data = doc.data();
+      updatedCards.push({
+        id: doc.id,
+        name: data.name,
+        platform: data.platform,
+        pros: data.pros,
+        neutral: data.neutral,
+        cons: data.cons,
+        button: data.button,
+        lastEditedBy: data.lastEditedBy,
+      });
     });
-
     if (selectedPlatforms.length > 0) {
-        updatedCards = updatedCards.filter(card =>
-            selectedPlatforms.every(platform => card.platform.includes(platform))
-        );
+      updatedCards = updatedCards.filter(card =>
+        card.platform.some(platform => selectedPlatforms.includes(platform))
+      );
     }
-
     setCardList(updatedCards);
-};
-
+  };
 
   const handleSaveNewCard = (newCard: CardProps | null) => {
     if (newCard) {
@@ -543,6 +547,12 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
     setIsAddingNew(false);
     fetchCards();
   };
+
+  type TooltipProps = {
+    text: string;
+    children: React.ReactNode;
+  };
+  
 
   useEffect(() => {
     fetchCards();
