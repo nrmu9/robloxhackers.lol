@@ -197,10 +197,11 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
     }
   };
 
-  const handlePlatformChange = (selectedOptions: any) => {
+const handlePlatformChange = (selectedOptions: any) => {
     const selectedPlatforms = selectedOptions.map((option: any) => option.value);
-    setEditedPlatformIcons(selectedPlatforms);
-  };
+    setSelectedPlatforms(selectedPlatforms);
+};
+
 
   
 
@@ -512,25 +513,28 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
     const querySnapshot = await getDocs(collection(db, 'cards'));
     let updatedCards: CardProps[] = [];
     querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      updatedCards.push({
-        id: doc.id,
-        name: data.name,
-        platform: data.platform,
-        pros: data.pros,
-        neutral: data.neutral,
-        cons: data.cons,
-        button: data.button,
-        lastEditedBy: data.lastEditedBy,
-      });
+        const data = doc.data();
+        updatedCards.push({
+            id: doc.id,
+            name: data.name,
+            platform: data.platform,
+            pros: data.pros,
+            neutral: data.neutral,
+            cons: data.cons,
+            button: data.button,
+            lastEditedBy: data.lastEditedBy,
+        });
     });
+
     if (selectedPlatforms.length > 0) {
-      updatedCards = updatedCards.filter(card =>
-        card.platform.some(platform => selectedPlatforms.includes(platform))
-      );
+        updatedCards = updatedCards.filter(card =>
+            selectedPlatforms.every(platform => card.platform.includes(platform))
+        );
     }
+
     setCardList(updatedCards);
-  };
+};
+
 
   const handleSaveNewCard = (newCard: CardProps | null) => {
     if (newCard) {
