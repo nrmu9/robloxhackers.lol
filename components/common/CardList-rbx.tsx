@@ -13,34 +13,31 @@ type TooltipProps = {
   children: React.ReactNode;
 };
 
-
 const InfoCard: React.FC = () => {
-  return (
-    <div className="bg-[#0c0c0e] border-[#27272a] border text-white rounded-lg shadow-lg p-4 mb-4 shadow-yellow-glow">
-      <h2 className="text-lg font-semibold text-green-500 glow">
-        Robux starting at just 1,000 R$ for only $3.45!
-      </h2>
-      <p>
-        <a 
-          href="/c/robux" 
-          className="text-white" 
-          target="_blank" 
-          rel="noopener noreferrer"
-        >
-          • Explore our list of Robux sellers by clicking here!
-        </a>
-      </p>
-      <style jsx>{`
-        .glow {
-          text-shadow: 0 0 5px rgba(0, 255, 0, 0.8), 0 0 10px rgba(0, 255, 0, 0.6);
-        }
-      `}</style>
-    </div>
-  );
-};
-
-
-
+    return (
+      <div className="bg-[#0c0c0e] border-[#27272a] border text-white rounded-lg shadow-lg p-4 mb-4 shadow-yellow-glow">
+        <h2 className="text-lg font-semibold text-green-500 glow">
+          Robux starting at just 1,000 R$ for only $3.45!
+        </h2>
+        <p>
+          <a 
+            href="/c/robux" 
+            className="text-white" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            • Explore our list of Robux sellers by clicking here!
+          </a>
+        </p>
+        <style jsx>{`
+          .glow {
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.8), 0 0 10px rgba(0, 255, 0, 0.6);
+          }
+        `}</style>
+      </div>
+    );
+  };
+  
 const isTouchDevice = () => {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 };
@@ -71,23 +68,17 @@ type CardListProps = {
   canEdit: (cardId: string) => boolean;
 };
 
-
 const platformOptions = [
-  { value: '/Bedrock.png', label: 'Bedrock Icon', text: 'Minecraft Bedrock', dropdowntext: 'Minecraft Bedrock' },
-  { value: '/Dirt Block.png', label: 'Java Icon', text: 'Minecraft Java', dropdowntext: 'Minecraft Java' },
-  { value: '/Blatant TNT.png', label: 'Blatant Client', text: 'Blatant Client - Blatant Cheat', dropdowntext: 'Blatant Client' },
-  { value: '/Ghost Glass.png', label: 'Ghost Client', text: 'Ghost Client - Closet Cheat', dropdowntext: 'Ghost Client' },
-  { value: '/linux-chicken.png', label: 'Linux', text: 'Supports Linux', dropdowntext: 'Linux' },
-  { value: '/windows-mc.png', label: 'Windows', text: 'Supports Windows', dropdowntext: 'Windows' },
-  { value: '/mc-apple.png', label: 'macOS', text: 'Supports macOS', dropdowntext: 'macOS' },
+  { value: '/adurite.png', label: 'Adurite', text: 'Adurite', dropdowntext: 'Adurite' },
+  { value: '/bloxflip.png', label: 'BloxFlip', text: 'BloxFlip', dropdowntext: 'BloxFlip' },
 ];
 
 
 const customStyles = {
   control: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: '#0c0c0e',
-    borderColor: state.isFocused ? '#27272a' : '#27272a',
+    backgroundColor: '#0c0c0e', // Background color for the control (input box)
+    borderColor: state.isFocused ? '#27272a' : '#27272a', // Border color for the control
     color: 'white',
     '&:hover': {
       borderColor: '#3B3B3F',
@@ -96,12 +87,12 @@ const customStyles = {
   }),
   menu: (provided: any) => ({
     ...provided,
-    backgroundColor: '#0c0c0e',
+    backgroundColor: '#0c0c0e', // Background color for the dropdown menu
     borderColor: '#27272a',
   }),
   option: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: state.isSelected ? '#151517' : state.isFocused ? '#151517' : '#151517',
+    backgroundColor: state.isSelected ? '#151517' : state.isFocused ? '#151517' : '#151517', // Background color for selected or focused option
     color: 'white',
     '&:hover': {
       backgroundColor: '#27272a',
@@ -156,15 +147,11 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
   const [editedButtonLabel, setEditedButtonLabel] = useState(button[0]);
   const [editedButtonLink, setEditedButtonLink] = useState(button[1]);
   const { user } = useAuth();
-
-  const handlePlatformChange = (selectedOptions: any) => {
-    const selectedPlatformValues = selectedOptions.map((option: any) => option.value);
-    setEditedPlatformIcons(selectedPlatformValues);
-  };
-
   const handleEdit = () => {
     setIsEditing(true);
   };
+
+const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
 
   const handleConfirm = async () => {
     if (window.confirm('Are you sure you want to update this card?')) {
@@ -179,10 +166,10 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
             button: [editedButtonLabel, editedButtonLink],
             lastEditedBy: user?.displayName || 'unknown',
           };
-          const docRef = await addDoc(collection(db, 'cards-mc'), newCard);
+          const docRef = await addDoc(collection(db, 'cards-rbx'), newCard);
           onSave?.({ ...newCard, id: docRef.id });
         } else {
-          await updateDoc(doc(db, 'cards-mc', id), {
+          await updateDoc(doc(db, 'cards-rbx', id), {
             name: editedName,
             platform: editedPlatformIcons,
             pros: editedPros,
@@ -224,7 +211,10 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
     }
   };
 
-  
+  const handlePlatformChange = (selectedOptions: any) => {
+    const selectedPlatforms = selectedOptions.map((option: any) => option.value);
+    setEditedPlatformIcons(selectedPlatforms);
+  };
 
   
 
@@ -277,7 +267,7 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
         <div className="flex-grow mb-4 text-left">
           {(isEditing || editedPros.length > 0) && (
             <div className="mb-2 mx-4">
-              <h3 className="text-green-400 font-semibold">About:</h3>
+              <h3 className="text-green-400 font-semibold">Pros:</h3>
               {editedPros.map((pro, index) => (
                 <div key={index} className="flex items-center">
                   {isEditing ? (
@@ -306,14 +296,14 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
               ))}
               {isEditing && (
                 <button onClick={() => setEditedPros([...editedPros, ''])} className="text-green-400 mt-2">
-                  + Add About
+                  + Add Pro
                 </button>
               )}
             </div>
           )}
           {(isEditing || editedNeutral.length > 0) && (
             <div className="mb-2 mx-4">
-              <h3 className="text-blue-400 font-semibold">Installation:</h3>
+              <h3 className="text-yellow-400 font-semibold">Neutral:</h3>
               {editedNeutral.map((item, index) => (
                 <div key={index} className="flex items-center">
                   {isEditing ? (
@@ -331,7 +321,7 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
                       <button onClick={() => {
                         const newNeutral = editedNeutral.filter((_, i) => i !== index);
                         setEditedNeutral(newNeutral);
-                      }} className="text-blue-400 ml-2">
+                      }} className="text-red-400 ml-2">
                         ×
                       </button>
                     </>
@@ -341,15 +331,15 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
                 </div>
               ))}
               {isEditing && (
-                <button onClick={() => setEditedNeutral([...editedNeutral, ''])} className="text-blue-400 mt-2">
-                  + Add Installation
+                <button onClick={() => setEditedNeutral([...editedNeutral, ''])} className="text-yellow-400 mt-2">
+                  + Add Neutral
                 </button>
               )}
             </div>
           )}
           {(isEditing || editedCons.length > 0) && (
             <div className="mb-2 mx-4">
-              <h3 className="text-gray-400 font-semibold">Version:</h3>
+              <h3 className="text-red-400 font-semibold">Cons:</h3>
               {editedCons.map((con, index) => (
                 <div key={index} className="flex items-center">
                   {isEditing ? (
@@ -367,7 +357,7 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
                       <button onClick={() => {
                         const newCons = editedCons.filter((_, i) => i !== index);
                         setEditedCons(newCons);
-                      }} className="text-gray-400 ml-2">
+                      }} className="text-red-400 ml-2">
                         ×
                       </button>
                     </>
@@ -377,8 +367,8 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
                 </div>
               ))}
               {isEditing && (
-                <button onClick={() => setEditedCons([...editedCons, ''])} className="text-gray-400 mt-2">
-                  + Add Version
+                <button onClick={() => setEditedCons([...editedCons, ''])} className="text-red-400 mt-2">
+                  + Add Con
                 </button>
               )}
             </div>
@@ -467,7 +457,7 @@ const NewCard: React.FC<{ onSave: (card: CardProps | null) => void }> = ({ onSav
         lastEditedBy: user?.displayName || 'unknown',
       };
       try {
-        const docRef = await addDoc(collection(db, 'cards-mc'), newCard);
+        const docRef = await addDoc(collection(db, 'cards-rbx'), newCard);
         onSave({ ...newCard, id: docRef.id });
         setIsEditing(false);
       } catch (error) {
@@ -525,15 +515,15 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
   const canEdit = (cardId: string) => {
     if (!user) return false;
     if (role === 'admin') return true;
-    if (role === 'editor-mc') return true; // Allow editor-mc to edit all cards
-    if (role === 'editor-mc' && editableCards) {
+    if (role === 'editor-rbx') return true; // Allow editor-rbx to edit all cards
+    if (role === 'editor-rbx' && editableCards) {
       return editableCards.includes(cardId);
     }
     return false;
   };
 
   const fetchCards = async () => {
-    const querySnapshot = await getDocs(collection(db, 'cards-mc'));
+    const querySnapshot = await getDocs(collection(db, 'cards-rbx'));
     let updatedCards: CardProps[] = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();

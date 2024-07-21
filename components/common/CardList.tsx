@@ -13,14 +13,33 @@ type TooltipProps = {
   children: React.ReactNode;
 };
 
+
+
 const InfoCard: React.FC = () => {
   return (
     <div className="bg-[#0c0c0e] border-[#27272a] border text-white rounded-lg shadow-lg p-4 mb-4 shadow-yellow-glow">
-      <h2 className="text-lg font-semibold">Welcome to the Roblox page!</h2>
-      <p>This page is updated by the Owners mostly</p>
+      <h2 className="text-lg font-semibold text-green-500 glow">
+        Robux starting at just 1,000 R$ for only $3.45!
+      </h2>
+      <p>
+        <a 
+          href="/c/robux" 
+          className="text-white" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          • Explore our list of Robux sellers by clicking here!
+        </a>
+      </p>
+      <style jsx>{`
+        .glow {
+          text-shadow: 0 0 5px rgba(0, 255, 0, 0.8), 0 0 10px rgba(0, 255, 0, 0.6);
+        }
+      `}</style>
     </div>
   );
 };
+
 const isTouchDevice = () => {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 };
