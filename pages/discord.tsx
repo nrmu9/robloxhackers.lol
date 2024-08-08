@@ -5,7 +5,7 @@ const DiscordPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('https://discord.gg/V55rJUqQVT');
+    router.push('https://discord.gg/Ynxbp2YPus');
   }, [router]);
 
   return null;
