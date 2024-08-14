@@ -21,19 +21,19 @@ jobs:
       - name: Add server to known_hosts
         run: |
           mkdir -p ~/.ssh
-          echo "172.93.102.38 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDBSGLaWLRkjzvHZsNwko48QiQhJqQTuEZENePDHEhRrcGbxVgeCoyOqP0/5Xzc2HP4vCYmpx7WPPjOZB+maKbaaFDtKXQ66SWyKxd5IgDPwZdWrxZXugN4nKCIYfT8UZ0sK4K4QhN4njFwMvjC9f4fZTJ6lkoVC1zrjqUnGYtsoNZc7mS39YH3KpBmQ5J7XGYUD3LyWDuWqEajrgC1ozrGBeRyP84xLO2GjVtAYNFLaDZ62GyBFe3q8PjFEO7sf+4i3jKpFaq4IcaHH0JEKh4OVlvbztZjvmrA1RJBv6PJFBJrWNWH1JL56h6i+NkaZbEMjZ0O3B57QhKmGhvlVt3F+ixXAS1F4fvWqVmvZoepqJ60IwAOJRqy6irN2WezuXFg6wwqrATwl4l2AHDjejVS4UYfAp6qNcfyVzieYrfZnsSYJZaiVH4eYAJ3mIjJgdGszqeUXudmx8aURHP4vqoLtNPqs0XBQrHOVLe8skHSMNusSC/vowDq7iDzI5GzFQc=" >> ~/.ssh/known_hosts
-          echo "172.93.102.38 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBG4pwPlvFG9HWkEojKGL4kGouypr19irexqRWH60ptZ4eOy0PxrEWZYR3E0a68SPhlqXKtBBz5gbyuLnspRCeMw=" >> ~/.ssh/known_hosts
-          echo "172.93.102.38 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP1DsuZElJ08AMQy1J5ZfXuROHw8Qlko57cC0HRKE4qh" >> ~/.ssh/known_hosts
+          echo "198.186.130.123 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDBSGLaWLRkjzvHZsNwko48QiQhJqQTuEZENePDHEhRrcGbxVgeCoyOqP0/5Xzc2HP4vCYmpx7WPPjOZB+maKbaaFDtKXQ66SWyKxd5IgDPwZdWrxZXugN4nKCIYfT8UZ0sK4K4QhN4njFwMvjC9f4fZTJ6lkoVC1zrjqUnGYtsoNZc7mS39YH3KpBmQ5J7XGYUD3LyWDuWqEajrgC1ozrGBeRyP84xLO2GjVtAYNFLaDZ62GyBFe3q8PjFEO7sf+4i3jKpFaq4IcaHH0JEKh4OVlvbztZjvmrA1RJBv6PJFBJrWNWH1JL56h6i+NkaZbEMjZ0O3B57QhKmGhvlVt3F+ixXAS1F4fvWqVmvZoepqJ60IwAOJRqy6irN2WezuXFg6wwqrATwl4l2AHDjejVS4UYfAp6qNcfyVzieYrfZnsSYJZaiVH4eYAJ3mIjJgdGszqeUXudmx8aURHP4vqoLtNPqs0XBQrHOVLe8skHSMNusSC/vowDq7iDzI5GzFQc=" >> ~/.ssh/known_hosts
+          echo "198.186.130.123 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBG4pwPlvFG9HWkEojKGL4kGouypr19irexqRWH60ptZ4eOy0PxrEWZYR3E0a68SPhlqXKtBBz5gbyuLnspRCeMw=" >> ~/.ssh/known_hosts
+          echo "198.186.130.123 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP1DsuZElJ08AMQy1J5ZfXuROHw8Qlko57cC0HRKE4qh" >> ~/.ssh/known_hosts
 
       - name: Remove old files
-        run: ssh root@172.93.102.38 'rm -rf /root/robloxhackers.lol/*'
+        run: ssh root@198.186.130.123 'rm -rf /root/robloxhackers.lol/*'
 
       - name: Copy files via SSH
-        run: scp -r ./* root@172.93.102.38:/root/robloxhackers.lol
+        run: scp -r ./* root@198.186.130.123:/root/robloxhackers.lol
 
       - name: Build and restart the application
         run: |
-          ssh root@172.93.102.38 << 'EOF'
+          ssh root@198.186.130.123 << 'EOF'
             cd /root/robloxhackers.lol
             npm install
             npm run build
