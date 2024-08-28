@@ -13,31 +13,41 @@ type TooltipProps = {
   children: React.ReactNode;
 };
 
+interface Props {
+  isEditing: boolean;
+  editedPros: string[];
+  setEditedPros: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+
+
 const InfoCard: React.FC = () => {
-    return (
-      <div className="bg-[#0c0c0e] border-[#27272a] border text-white rounded-lg shadow-lg p-4 mb-4 shadow-yellow-glow">
-        <h2 className="text-lg font-semibold text-green-500 glow">
-          Robux starting at just 1,000 R$ for only $3.45!
-        </h2>
-        <p>
-          <a 
-            href="/c/robux" 
-            className="text-white" 
-            target="_blank" 
-            rel="noopener noreferrer"
-          >
-            • Explore our list of Robux sellers by clicking here!
-          </a>
-        </p>
-        <style jsx>{`
-          .glow {
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.8), 0 0 10px rgba(0, 255, 0, 0.6);
-          }
-        `}</style>
-      </div>
-    );
-  };
-  
+  return (
+    <div className="bg-zinc-900 bg-opacity-20 border-zinc-800 border text-white rounded-lg shadow-lg p-4 mb-4 shadow-yellow-glow max-w-full w-full">
+      <h2 className="text-lg font-semibold text-red-500 mx-1 glow">
+        Robux starting at just 1,000 R$ for only $3.45!
+      </h2>
+      <p>
+        <a 
+          href="/c/robux" 
+          className="text-white" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          • Explore our list of Robux sellers by clicking here!
+        </a>
+      </p>
+      <style jsx>{`
+        .glow {
+          text-shadow: 0 0 5px #ef4444, 0 0 10px #ef4444;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+
+
 const isTouchDevice = () => {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 };
@@ -46,7 +56,7 @@ const isTouchDevice = () => {
 const Tooltip: React.FC<TooltipProps> = ({ text, children }) => (
   <div className="relative group inline-block">
     {children}
-    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-2 py-1 text-sm text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-2 py-1 text-sm text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden group-hover:block">
       {text}
     </div>
   </div>
@@ -70,15 +80,18 @@ type CardListProps = {
 
 const platformOptions = [
   { value: '/adurite.png', label: 'Adurite', text: 'Adurite', dropdowntext: 'Adurite' },
-  { value: '/bloxflip.png', label: 'BloxFlip', text: 'BloxFlip', dropdowntext: 'BloxFlip' },
+  { value: '/bloxflip.png', label: 'Bloxflip', text: 'Bloxflip', dropdowntext: 'Bloxflip' },
+  { value: '/bloxgame.png', label: 'BloxGame', text: 'BloxGame', dropdowntext: 'BloxGame' },
+  { value: '/rbxgold.png', label: 'RBXGold', text: 'RBXGold', dropdowntext: 'RBXGold' },
+  { value: '/bloxlose.png', label: 'Bloxlose', text: 'Bloxlose', dropdowntext: 'Bloxlose' },
 ];
 
 
 const customStyles = {
   control: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: '#0c0c0e', // Background color for the control (input box)
-    borderColor: state.isFocused ? '#27272a' : '#27272a', // Border color for the control
+    backgroundColor: 'rgba(24, 24, 27, 0.2)', // bg-zinc-900 with bg-opacity-20
+    borderColor: '#27272a', // border-zinc-800
     color: 'white',
     '&:hover': {
       borderColor: '#3B3B3F',
@@ -87,21 +100,21 @@ const customStyles = {
   }),
   menu: (provided: any) => ({
     ...provided,
-    backgroundColor: '#0c0c0e', // Background color for the dropdown menu
-    borderColor: '#27272a',
+    backgroundColor: 'rgba(24, 24, 27, 0.2)', // bg-zinc-900 with bg-opacity-20
+    borderColor: '#27272a', // border-zinc-800
   }),
   option: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: state.isSelected ? '#151517' : state.isFocused ? '#151517' : '#151517', // Background color for selected or focused option
+    backgroundColor: state.isSelected ? '#27272a' : state.isFocused ? '#1f1f21' : 'rgba(24, 24, 27, 0.2)', // bg-zinc-900 with bg-opacity-20
     color: 'white',
     '&:hover': {
-      backgroundColor: '#27272a',
+      backgroundColor: '#27272a', // Slightly darken on hover
     },
   }),
   multiValue: (provided: any) => ({
     ...provided,
-    backgroundColor: '#27272a',
-    color: 'black',
+    backgroundColor: 'transparent', // Keeping tags transparent
+    color: 'white',
   }),
   multiValueLabel: (provided: any) => ({
     ...provided,
@@ -124,6 +137,9 @@ const customStyles = {
     color: '#9ca3af',
   }),
 };
+
+
+
 
 const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; onSave?: (card: CardProps | null) => void }> = ({
   id,
@@ -193,9 +209,11 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
       } catch (error) {
         console.error('Error updating document: ', error);
       }
+      
     }
   };
 
+  
   const handleCancel = () => {
     if (isNew) {
       onSave?.(null);
@@ -232,6 +250,7 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
               placeholder="Select Platforms"
               className="w-48"
             />
+            
           ) : (
             <div className="flex space-x-2">
               {editedPlatformIcons.map((imagePath: string, index: number) => {
@@ -261,7 +280,9 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
               className="text-2xl font-semibold mb-2 bg-transparent border-b border-gray-500 focus:outline-none w-full"
             />
           ) : (
-            <h2 className="text-2xl font-semibold mb-2">{name}</h2>
+             <h2 className="text-2xl font-semibold mb-2">
+                 <span className="text-gray-500 font-extrabold text-4xl"></span> {name}
+             </h2>
           )}
         </div>
         <div className="flex-grow mb-4 text-left">
@@ -405,16 +426,23 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
               </div>
             ) : (
               <>
-                <button
-                  onClick={() => {
-                    if (button[1]) {
-                      window.open(button[1], '_blank');
-                    }
-                  }}
-                  className="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-full shadow-md hover:from-indigo-600 hover:to-purple-700 transition-transform transform hover:scale-105 flex-grow"
-                >
-                  {button[0]}
-                </button>
+<button
+  onClick={() => {
+    if (button[1]) {
+      window.open(button[1], '_blank');
+    }
+  }}
+  className={`inline-block border-2 font-semibold py-2 px-4 rounded-full shadow-md transition-transform transform flex-grow ${
+    button[0] === "ADVERTISEMENT"
+      ? "bg-transparent border-gray-500 text-gray-500 hover:bg-gray-400 hover:text-white"
+      : "bg-transparent border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+  }`}
+>
+  <span className={`transition-all duration-300 ${button[0] === "ADVERTISEMENT" ? "group-hover:text-white" : ""}`}>
+    {button[0]}
+  </span>
+</button>
+
                 {canEdit && (
                   <div className="ml-2 flex-shrink-0">
                     <Image src="/Edit.png" alt="Edit" width={24} height={24} className="cursor-pointer" onClick={handleEdit} />
@@ -424,10 +452,31 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
             )}
           </div>
           {lastEditedBy && (
-            <p className="text-gray-500 mt-2 text-sm text-center">
-              Last edited by {lastEditedBy}
-            </p>
-          )}
+  <p className="text-gray-500 mt-2 text-sm text-center flex items-center justify-center">
+    Last edited by {lastEditedBy}
+    {lastEditedBy === 'u/Failed_cocacola' || lastEditedBy === 'nrmu' ? (
+      <Image
+        src="/verified.png"  // Ensure path is correct relative to the public folder
+        alt="Verified"
+        width={16}
+        height={16}
+        className="ml-1"  // Add margin to the left of the icon
+      />
+    ) : lastEditedBy === 'unknown' ? (
+      <Image
+        src="/unknown.png"  // Ensure path is correct relative to the public folder
+        alt="Unknown"
+        width={16}
+        height={16}
+        className="ml-1"  // Add margin to the left of the icon
+      />
+    ) : null}
+  </p>
+)}
+
+
+
+
         </div>
       </div>
     </Tilt>
@@ -515,7 +564,7 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
   const canEdit = (cardId: string) => {
     if (!user) return false;
     if (role === 'admin') return true;
-    if (role === 'editor-rbx') return true; // Allow editor-rbx to edit all cards
+    if (role === 'editor-rbx') return true; // Allow editor-rbblx to edit all cards
     if (role === 'editor-rbx' && editableCards) {
       return editableCards.includes(cardId);
     }

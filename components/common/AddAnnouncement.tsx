@@ -12,35 +12,35 @@ const announcementStyles = [
 const customSelectStyles = {
   control: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: '#3f3f46',
-    borderColor: state.isFocused ? '#6366f1' : '#4b5563',
+    backgroundColor: '#1f1f1f',  // Dark background
+    borderColor: state.isFocused ? '#ef4444' : '#3f3f3f',  // Red focus, dark grey default
     color: 'white',
     '&:hover': {
-      borderColor: '#6366f1',
+      borderColor: '#ef4444',  // Red on hover
     },
-    boxShadow: state.isFocused ? '0 0 0 1px #6366f1' : 'none',
+    boxShadow: state.isFocused ? '0 0 0 1px #ef4444' : 'none',  // Red shadow when focused
     transition: 'border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
   }),
   menu: (provided: any) => ({
     ...provided,
-    backgroundColor: '#3f3f46',
-    borderColor: '#4b5563',
+    backgroundColor: '#1f1f1f',  // Dark background for the menu
+    borderColor: '#3f3f3f',  // Dark grey border
   }),
   option: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: state.isSelected ? '#6366f1' : state.isFocused ? '#4b5563' : undefined,
+    backgroundColor: state.isSelected ? '#ef4444' : state.isFocused ? '#3f3f3f' : undefined,  // Red when selected, dark grey when focused
     color: 'white',
     '&:hover': {
-      backgroundColor: '#4b5563',
+      backgroundColor: '#3f3f3f',  // Dark grey on hover
     },
   }),
   singleValue: (provided: any) => ({
     ...provided,
-    color: 'white',
+    color: 'white',  // White text
   }),
   placeholder: (provided: any) => ({
     ...provided,
-    color: '#9ca3af',
+    color: '#9ca3af',  // Light grey placeholder text
   }),
 };
 
@@ -65,7 +65,7 @@ const AddAnnouncement: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="text-white space-y-4">
+    <form onSubmit={handleSubmit} className="text-white space-y-4 w-full">
       <div>
         <label className="block text-sm font-bold mb-2" htmlFor="title">
           Title
@@ -76,7 +76,7 @@ const AddAnnouncement: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Title"
-          className="w-full p-2 rounded bg-zinc-700 bg-opacity-50 border border-zinc-600 focus:outline-none focus:border-indigo-500 transition-colors duration-300 ease-in-out"
+          className="w-full p-2 rounded bg-black bg-opacity-75 border border-gray-600 focus:outline-none focus:border-red-500 transition-colors duration-300 ease-in-out"
           required
         />
       </div>
@@ -89,7 +89,9 @@ const AddAnnouncement: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Message"
-          className="w-full p-2 rounded bg-zinc-700 bg-opacity-50 border border-zinc-600 focus:outline-none focus:border-indigo-500 transition-colors duration-300 ease-in-out"
+          className="w-full p-2 rounded bg-black bg-opacity-75 border border-gray-600 focus:outline-none focus:border-red-500 transition-colors duration-300 ease-in-out resize" // Added resize
+          rows={4} // Set a default row height
+          style={{ resize: 'both' }} // Allow resizing in both dimensions
           required
         />
       </div>
@@ -106,7 +108,10 @@ const AddAnnouncement: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           className="w-full"
         />
       </div>
-      <button type="submit" className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold py-2 px-4 rounded-full shadow-md hover:from-indigo-600 hover:to-purple-700 transition-transform transform hover:scale-105 w-full">
+      <button
+        type="submit"
+        className="inline-block bg-transparent border-2 border-red-500 text-red-500 font-semibold py-2 px-4 rounded-full shadow-md hover:bg-red-500 hover:text-white transition-transform transform hover:scale-105 w-full"
+      >
         Add Announcement
       </button>
     </form>
