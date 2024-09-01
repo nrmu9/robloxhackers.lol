@@ -14,7 +14,8 @@
     "@tailwindcss/typography": "^0.5.13",
     "@tsparticles/engine": "^3.4.0",
     "@tsparticles/react": "^3.0.0",
-    "axios": "^1.7.2",
+    "@types/axios": "^0.14.0",
+    "axios": "^1.7.5",
     "cheerio": "^1.0.0-rc.12",
     "dompurify": "^3.1.5",
     "firebase": "^10.12.1",
@@ -35,12 +36,13 @@
     "sharp": "^0.33.4",
     "styled-components": "^6.1.11",
     "tailwind-scrollbar": "^3.1.0",
+    "ts-node": "^10.9.2",
     "tsparticles": "^3.4.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/dompurify": "^3.0.5",
-    "@types/node": "^20",
+    "@types/node": "^20.16.2",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-syntax-highlighter": "^15.5.13",
@@ -51,6 +53,11 @@
     "eslint-config-next": "14.2.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
-  }
+    "typescript": "^5.5.4"
+  },
+  "description": "First, run the development server:",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

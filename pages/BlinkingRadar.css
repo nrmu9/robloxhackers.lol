@@ -1,0 +1,34 @@
+.blinking {
+    animation: blink 1s ease infinite;
+  }
+  
+  @keyframes blink {
+    from,
+    to {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  
+  .radar-wave {
+    fill: none; /* No fill color */
+    stroke: red; /* Wave color */
+    stroke-width: 2;
+    animation: wave 2s ease-out infinite;
+  }
+  
+  @keyframes wave {
+    0% {
+      opacity: 0.8;
+      r: 20; /* Start radius */
+      stroke-width: 2;
+    }
+    100% {
+      opacity: 0;
+      r: 70; /* End radius */
+      stroke-width: 0;
+    }
+  }
+  

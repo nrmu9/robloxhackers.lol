@@ -13,11 +13,18 @@ type TooltipProps = {
   children: React.ReactNode;
 };
 
+interface Props {
+  isEditing: boolean;
+  editedPros: string[];
+  setEditedPros: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+
 
 const InfoCard: React.FC = () => {
   return (
-    <div className="bg-[#0c0c0e] border-[#27272a] border text-white rounded-lg shadow-lg p-4 mb-4 shadow-yellow-glow">
-      <h2 className="text-lg font-semibold text-green-500 glow">
+    <div className="bg-zinc-900 bg-opacity-20 border-zinc-800 border text-white rounded-lg shadow-lg p-4 mb-4 shadow-yellow-glow max-w-full w-full">
+      <h2 className="text-lg font-semibold text-red-500 mx-1 glow">
         Robux starting at just 1,000 R$ for only $3.45!
       </h2>
       <p>
@@ -32,7 +39,7 @@ const InfoCard: React.FC = () => {
       </p>
       <style jsx>{`
         .glow {
-          text-shadow: 0 0 5px rgba(0, 255, 0, 0.8), 0 0 10px rgba(0, 255, 0, 0.6);
+          text-shadow: 0 0 5px #ef4444, 0 0 10px #ef4444;
         }
       `}</style>
     </div>
@@ -49,7 +56,7 @@ const isTouchDevice = () => {
 const Tooltip: React.FC<TooltipProps> = ({ text, children }) => (
   <div className="relative group inline-block">
     {children}
-    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-2 py-1 text-sm text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-2 py-1 text-sm text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden group-hover:block">
       {text}
     </div>
   </div>
@@ -71,7 +78,6 @@ type CardListProps = {
   canEdit: (cardId: string) => boolean;
 };
 
-
 const platformOptions = [
   { value: '/Bedrock.png', label: 'Bedrock Icon', text: 'Minecraft Bedrock', dropdowntext: 'Minecraft Bedrock' },
   { value: '/Dirt Block.png', label: 'Java Icon', text: 'Minecraft Java', dropdowntext: 'Minecraft Java' },
@@ -86,8 +92,8 @@ const platformOptions = [
 const customStyles = {
   control: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: '#0c0c0e',
-    borderColor: state.isFocused ? '#27272a' : '#27272a',
+    backgroundColor: 'rgba(24, 24, 27, 0.2)', // bg-zinc-900 with bg-opacity-20
+    borderColor: '#27272a', // border-zinc-800
     color: 'white',
     '&:hover': {
       borderColor: '#3B3B3F',
@@ -96,21 +102,21 @@ const customStyles = {
   }),
   menu: (provided: any) => ({
     ...provided,
-    backgroundColor: '#0c0c0e',
-    borderColor: '#27272a',
+    backgroundColor: 'rgba(24, 24, 27, 0.2)', // bg-zinc-900 with bg-opacity-20
+    borderColor: '#27272a', // border-zinc-800
   }),
   option: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: state.isSelected ? '#151517' : state.isFocused ? '#151517' : '#151517',
+    backgroundColor: state.isSelected ? '#27272a' : state.isFocused ? '#1f1f21' : 'rgba(24, 24, 27, 0.2)', // bg-zinc-900 with bg-opacity-20
     color: 'white',
     '&:hover': {
-      backgroundColor: '#27272a',
+      backgroundColor: '#27272a', // Slightly darken on hover
     },
   }),
   multiValue: (provided: any) => ({
     ...provided,
-    backgroundColor: '#27272a',
-    color: 'black',
+    backgroundColor: 'transparent', // Keeping tags transparent
+    color: 'white',
   }),
   multiValueLabel: (provided: any) => ({
     ...provided,
@@ -134,6 +140,9 @@ const customStyles = {
   }),
 };
 
+
+
+
 const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; onSave?: (card: CardProps | null) => void }> = ({
   id,
   name,
@@ -156,15 +165,11 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
   const [editedButtonLabel, setEditedButtonLabel] = useState(button[0]);
   const [editedButtonLink, setEditedButtonLink] = useState(button[1]);
   const { user } = useAuth();
-
-  const handlePlatformChange = (selectedOptions: any) => {
-    const selectedPlatformValues = selectedOptions.map((option: any) => option.value);
-    setEditedPlatformIcons(selectedPlatformValues);
-  };
-
   const handleEdit = () => {
     setIsEditing(true);
   };
+
+const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
 
   const handleConfirm = async () => {
     if (window.confirm('Are you sure you want to update this card?')) {
@@ -206,9 +211,11 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
       } catch (error) {
         console.error('Error updating document: ', error);
       }
+      
     }
   };
 
+  
   const handleCancel = () => {
     if (isNew) {
       onSave?.(null);
@@ -224,7 +231,10 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
     }
   };
 
-  
+  const handlePlatformChange = (selectedOptions: any) => {
+    const selectedPlatforms = selectedOptions.map((option: any) => option.value);
+    setEditedPlatformIcons(selectedPlatforms);
+  };
 
   
 
@@ -242,6 +252,7 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
               placeholder="Select Platforms"
               className="w-48"
             />
+            
           ) : (
             <div className="flex space-x-2">
               {editedPlatformIcons.map((imagePath: string, index: number) => {
@@ -271,7 +282,9 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
               className="text-2xl font-semibold mb-2 bg-transparent border-b border-gray-500 focus:outline-none w-full"
             />
           ) : (
-            <h2 className="text-2xl font-semibold mb-2">{name}</h2>
+             <h2 className="text-2xl font-semibold mb-2">
+                 <span className="text-gray-500 font-extrabold text-4xl"></span> {name}
+             </h2>
           )}
         </div>
         <div className="flex-grow mb-4 text-left">
@@ -306,14 +319,14 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
               ))}
               {isEditing && (
                 <button onClick={() => setEditedPros([...editedPros, ''])} className="text-green-400 mt-2">
-                  + Add About
+                  + Add Pro
                 </button>
               )}
             </div>
           )}
           {(isEditing || editedNeutral.length > 0) && (
             <div className="mb-2 mx-4">
-              <h3 className="text-blue-400 font-semibold">Installation:</h3>
+              <h3 className="text-yellow-400 font-semibold">Installation:</h3>
               {editedNeutral.map((item, index) => (
                 <div key={index} className="flex items-center">
                   {isEditing ? (
@@ -331,7 +344,7 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
                       <button onClick={() => {
                         const newNeutral = editedNeutral.filter((_, i) => i !== index);
                         setEditedNeutral(newNeutral);
-                      }} className="text-blue-400 ml-2">
+                      }} className="text-red-400 ml-2">
                         ×
                       </button>
                     </>
@@ -341,15 +354,15 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
                 </div>
               ))}
               {isEditing && (
-                <button onClick={() => setEditedNeutral([...editedNeutral, ''])} className="text-blue-400 mt-2">
-                  + Add Installation
+                <button onClick={() => setEditedNeutral([...editedNeutral, ''])} className="text-yellow-400 mt-2">
+                  + Add Neutral
                 </button>
               )}
             </div>
           )}
           {(isEditing || editedCons.length > 0) && (
             <div className="mb-2 mx-4">
-              <h3 className="text-gray-400 font-semibold">Version:</h3>
+              <h3 className="text-red-400 font-semibold">Versions:</h3>
               {editedCons.map((con, index) => (
                 <div key={index} className="flex items-center">
                   {isEditing ? (
@@ -367,7 +380,7 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
                       <button onClick={() => {
                         const newCons = editedCons.filter((_, i) => i !== index);
                         setEditedCons(newCons);
-                      }} className="text-gray-400 ml-2">
+                      }} className="text-red-400 ml-2">
                         ×
                       </button>
                     </>
@@ -377,8 +390,8 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
                 </div>
               ))}
               {isEditing && (
-                <button onClick={() => setEditedCons([...editedCons, ''])} className="text-gray-400 mt-2">
-                  + Add Version
+                <button onClick={() => setEditedCons([...editedCons, ''])} className="text-red-400 mt-2">
+                  + Add Con
                 </button>
               )}
             </div>
@@ -421,7 +434,7 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
                       window.open(button[1], '_blank');
                     }
                   }}
-                  className="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-full shadow-md hover:from-indigo-600 hover:to-purple-700 transition-transform transform hover:scale-105 flex-grow"
+                  className="inline-block bg-transparent border-2 border-red-500 text-red-500 font-semibold py-2 px-4 rounded-full shadow-md hover:bg-red-500 hover:text-white transition-transform transform hover:scale-105 flex-grow"
                 >
                   {button[0]}
                 </button>
@@ -434,10 +447,31 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
             )}
           </div>
           {lastEditedBy && (
-            <p className="text-gray-500 mt-2 text-sm text-center">
-              Last edited by {lastEditedBy}
-            </p>
-          )}
+  <p className="text-gray-500 mt-2 text-sm text-center flex items-center justify-center">
+    Last edited by {lastEditedBy}
+    {lastEditedBy === 'u/Failed_cocacola' || lastEditedBy === 'nrmu' ? (
+      <Image
+        src="/verified.png"  // Ensure path is correct relative to the public folder
+        alt="Verified"
+        width={16}
+        height={16}
+        className="ml-1"  // Add margin to the left of the icon
+      />
+    ) : lastEditedBy === 'unknown' ? (
+      <Image
+        src="/unknown.png"  // Ensure path is correct relative to the public folder
+        alt="Unknown"
+        width={16}
+        height={16}
+        className="ml-1"  // Add margin to the left of the icon
+      />
+    ) : null}
+  </p>
+)}
+
+
+
+
         </div>
       </div>
     </Tilt>
@@ -525,7 +559,7 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
   const canEdit = (cardId: string) => {
     if (!user) return false;
     if (role === 'admin') return true;
-    if (role === 'editor-mc') return true; // Allow editor-mc to edit all cards
+    if (role === 'editor-mc') return true; // Allow editor-rbblx to edit all cards
     if (role === 'editor-mc' && editableCards) {
       return editableCards.includes(cardId);
     }

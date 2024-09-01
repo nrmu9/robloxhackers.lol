@@ -190,9 +190,14 @@ const News = () => {
                 </h2>
                 <p className="text-gray-400 mb-2">{formatDate(newsItem.date)}</p>
                 <div className={`${styles.markdownContent} text-white mb-4`} dangerouslySetInnerHTML={{ __html: renderedContents[newsItem.id] || '' }}></div>
-                <Link href={`/news/${newsItem.id}`} className="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-2 px-3 rounded-full shadow-md hover:from-indigo-600 hover:to-purple-700 transition-transform transform hover:scale-105">
-                  Read more
-                </Link>
+                <Link
+  href={`/news/${newsItem.id}`}
+  className="inline-block bg-transparent border-2 border-red-500 text-red-500 font-semibold py-1 px-2 rounded-full shadow-md hover:bg-red-500 hover:text-white transition-transform transform hover:scale-105"
+>
+  Read more
+</Link>
+
+
                 {role === 'admin' && (
                   <div className="flex space-x-2 mt-4">
                     <button

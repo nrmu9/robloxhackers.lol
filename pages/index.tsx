@@ -1,110 +1,66 @@
-import React from 'react';
-import SocialsCard from '@/components/SocialsCard';
-import Tilt from 'react-parallax-tilt';
-import { useRouter } from 'next/router'; // Import the router
+import React, { useEffect } from 'react';
+import Head from 'next/head';
+import GameCards from '@/components/GameCards'; // Import the new component
 
 const IndexPage = () => {
-  const router = useRouter(); // Initialize the router
+  useEffect(() => {
+    const handleAnimation = () => {
+      const elements = document.querySelectorAll('.pop-up-animation');
+      elements.forEach((element) => {
+        element.classList.add('animated'); // Add 'animated' class to trigger animation
+      });
+    };
 
-  const handleMinecraftClick = () => {
-    router.push('/minecraft'); // Navigate within the same tab
-  };
-
-  const handleRobloxClick = () => {
-    router.push('/exploits'); // Navigate within the same tab
-  };
-
-  const handleCounterStrikeClick = () => {
-    router.push('/cs2'); // Navigate within the same tab
-  };
+    handleAnimation(); // Trigger the animation when the component mounts
+  }, []);
 
   return (
     <div className="container mx-auto p-4">
+      <Head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..200&family=New+Amsterdam&display=swap" 
+          rel="stylesheet" 
+        />
+        <style>{`
+          .font-new-amsterdam {
+            font-family: 'New Amsterdam', sans-serif;
+          }
+          .pop-up-animation {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+          }
+          .animated {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          .glow-red {
+            color: #ef4444; /* Matching the color of text-red-500 */
+            text-shadow: 0 0 3px rgba(239, 68, 68, 0.5), 
+                         0 0 6px rgba(239, 68, 68, 0.3);
+          }
+          .non-selectable {
+            user-select: none; /* Prevent text selection */
+          }
+        `}</style>
+      </Head>
       <div className="flex flex-col md:flex-row items-center">
-        <div className="md:w-1/2 p-6">
-          <h1 className="text-3xl md:text-5xl font-bold mb-4">robloxhackers.lol</h1>
-          <p className="text-lg mb-4">
-            Welcome to robloxhackers.lol, your go-to source for the latest information on security vulnerabilities, exploits, and updates. Stay ahead of potential threats and keep your knowledge up-to-date with our comprehensive resources.
+        <div className="md:w-1/2 p-6 flex flex-col justify-center items-center non-selectable">
+          <h1 className="text-3xl md:text-5xl font-bold mb-2 text-center pop-up-animation">
+            <span className="text-white">WWW.</span>
+            <span className="text-red-500">VOXLIS</span>
+            <span className="text-white">.NET</span>
+          </h1>
+          <p className="text-lg mb-0.1 text-center font-new-amsterdam pop-up-animation">
+            Ready to <span className="glow-red">win</span>? {/* Apply same color as VOXLIS */}
           </p>
-          <SocialsCard />
         </div>
-        <div className="md:w-1/2 flex flex-col items-center mt-8 md:mt-0">
-          <div className="text-left mb-4 ml-6">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">Game Selection</h2>
-            <p className="text-lg mb-4">
-              Enhance your gaming experience with a variety of cheats and exploits! The <span className="text-blue-500 glow">Counter-Strike</span> and <span className="text-green-500 glow">Minecraft</span> pages are managed by our experienced contributors who are knowledgeable in their field.
-            </p>
-            <p className="text-red-500">PREVIEW - might find misinformation for Counter-Strike 2 & Minecraft only</p>
-          </div>
-          <div className="flex flex-wrap justify-center gap-4">
-            <div className="w-40 h-40 md:w-48 md:h-48">
-              <div onClick={handleCounterStrikeClick}>
-                <Tilt
-                  className="bg-gray-800 rounded-lg overflow-hidden cursor-pointer"
-                  tiltMaxAngleX={15}
-                  tiltMaxAngleY={15}
-                  scale={1.05} // Increase scale for slightly bigger cards
-                  transitionSpeed={250}
-                  glareEnable={true}
-                  glareMaxOpacity={0.1}
-                  glareColor="gray"
-                  glarePosition="all"
-                  glareBorderRadius="10px"
-                >
-                  <div className="w-full h-full flex items-center justify-center">
-                    <img src="/cs2-index.png" alt="CS" className="w-full h-full object-cover" />
-                  </div>
-                </Tilt>
-              </div>
-            </div>
-            <div className="w-40 h-40 md:w-48 md:h-48">
-              <div onClick={handleMinecraftClick}>
-                <Tilt
-                  className="bg-gray-800 rounded-lg overflow-hidden cursor-pointer"
-                  tiltMaxAngleX={15}
-                  tiltMaxAngleY={15}
-                  scale={1.05} // Increase scale for slightly bigger cards
-                  transitionSpeed={250}
-                  glareEnable={true}
-                  glareMaxOpacity={0.1}
-                  glareColor="gray"
-                  glarePosition="all"
-                  glareBorderRadius="10px"
-                >
-                  <div className="w-full h-full flex items-center justify-center">
-                    <img src="/mc-index.png" alt="Minecraft" className="w-full h-full object-cover" />
-                  </div>
-                </Tilt>
-              </div>
-            </div>
-            <div className="w-40 h-40 md:w-48 md:h-48">
-              <div onClick={handleRobloxClick}>
-                <Tilt
-                  className="bg-gray-800 rounded-lg overflow-hidden cursor-pointer"
-                  tiltMaxAngleX={15}
-                  tiltMaxAngleY={15}
-                  scale={1.05} // Increase scale for slightly bigger cards
-                  transitionSpeed={250}
-                  glareEnable={true}
-                  glareMaxOpacity={0.1}
-                  glareColor="gray"
-                  glarePosition="all"
-                  glareBorderRadius="10px"
-                >
-                  <div className="w-full h-full flex items-center justify-center">
-                    <img src="/rblx-index.png" alt="Roblox" className="w-full h-full object-cover" />
-                  </div>
-                </Tilt>
-              </div>
-            </div>
-          </div>
+        <div className="md:w-1/2 p-6">
+          <GameCards /> {/* Render the GameCards component */}
         </div>
       </div>
-      <style jsx>{`
-        .glow {
-          text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
-        }
-      `}</style>
     </div>
   );
 };
