@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Footer from './Footer';
 import Navbar from './Navbar';
@@ -9,6 +9,20 @@ const montserrat = Montserrat({ subsets: ['latin-ext'] });
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const { pathname } = useRouter();
   const isHomepage = pathname === '/';
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Function to check if the device is mobile based on screen width
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 640); // Use a breakpoint, e.g., 640px
+    };
+
+    checkIfMobile(); // Check on initial render
+
+    window.addEventListener('resize', checkIfMobile); // Add event listener on resize
+
+    return () => window.removeEventListener('resize', checkIfMobile); // Cleanup listener on unmount
+  }, []);
 
   return (
     <div
@@ -16,7 +30,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         isHomepage ? 'bg-transparent' : 'bg-black text-white'
       }`}
     >
-      {isHomepage && (
+      {isHomepage && !isMobile && (
+        // Conditionally render the video element only if not on mobile
         <>
           <video
             autoPlay

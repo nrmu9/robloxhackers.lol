@@ -158,6 +158,10 @@ body {
   100% { transform: translateX(0); }
 }
 
+.aggressive-shake {
+  animation: aggressive-shake 0.5s ease-in-out infinite;
+}
+
 .shake-on-hover {
   position: relative;
   transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
@@ -188,3 +192,80 @@ body {
   opacity: 0.8; /* Change opacity on hover */
   background-color: rgba(255, 0, 0, 0.1); /* Optional: Change background color on hover */
 }
+
+/* Mobile styles */
+@media only screen and (max-width: 768px) {
+  .relative.flex.items-center.justify-center.overflow-hidden {
+    flex-direction: column;
+    align-items: center;
+  }
+  .relative.flex.items-center.justify-center {
+    width: 100%;
+    height: auto;
+  }
+  .absolute.transition-transform.duration-700.ease-in-out.non-selectable {
+    width: 100px;
+    height: 100px;
+    left: 0;
+    top: 0;
+    transform: none;
+    opacity: 1;
+  }
+  .bg-gray-800.rounded-lg.overflow-hidden.cursor-pointer.non-selectable.shake-on-hover {
+    width: 100%;
+    height: 100%;
+  }
+  .w-full.h-full.flex.items-center.justify-center.non-selectable {
+    width: 100%;
+    height: 100%;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* Mobile styles */
+@media only screen and (max-width: 768px) {
+  .relative.flex.flex-col.min-h-screen {
+    background-color: #000; /* or any other color you want */
+  }
+  .background-video {
+    display: none;
+  }
+  .overlay {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .mobile-stack {
+    position: static !important; /* Stack cards vertically on mobile */
+    transform: none !important; /* Remove any transformations on mobile */
+    margin-bottom: 16px; /* Add space between stacked cards */
+    opacity: 1 !important; /* Ensure full opacity on mobile */
+  }
+
+  .flex-column-center { /* Replaces .relative */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .game-card-full-width { /* Replaces .card */
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px; /* Space between stacked cards */
+  }
+}
+
+  .no-tilt-on-mobile {
+    display: flex;
+    width: 100% !important; /* Full width on mobile */
+    height: auto; /* Adjust height automatically */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
