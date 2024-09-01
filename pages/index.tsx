@@ -24,6 +24,14 @@ const IndexPage = () => {
           rel="stylesheet" 
         />
         <style>{`
+          @keyframes shake-index {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-1px); }
+            50% { transform: translateX(1px); }
+            75% { transform: translateX(-1px); }
+            100% { transform: translateX(0); }
+          }
+
           .font-new-amsterdam {
             font-family: 'New Amsterdam', sans-serif;
           }
@@ -41,6 +49,10 @@ const IndexPage = () => {
             text-shadow: 0 0 3px rgba(239, 68, 68, 0.5), 
                          0 0 6px rgba(239, 68, 68, 0.3);
           }
+          .shake-animation {
+            display: inline-block;
+            animation: shake-index 0.1s infinite; /* Apply the shake animation */
+          }
           .non-selectable {
             user-select: none; /* Prevent text selection */
           }
@@ -54,7 +66,7 @@ const IndexPage = () => {
             <span className="text-white">.NET</span>
           </h1>
           <p className="text-lg mb-0.1 text-center font-new-amsterdam pop-up-animation">
-            Ready to <span className="glow-red">win</span>? {/* Apply same color as VOXLIS */}
+            Ready to <span className="glow-red shake-animation">win</span>? {/* Apply the shake animation class */}
           </p>
         </div>
         <div className="md:w-1/2 p-6">

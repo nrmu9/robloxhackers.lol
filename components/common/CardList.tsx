@@ -91,8 +91,8 @@ const platformOptions = [
 const customStyles = {
   control: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: 'rgba(24, 24, 27, 0.2)', // bg-zinc-900 with bg-opacity-20
-    borderColor: '#27272a', // border-zinc-800
+    backgroundColor: '#050505', // Solid dark background for control
+    borderColor: '#27272a', // Border color
     color: 'white',
     '&:hover': {
       borderColor: '#3B3B3F',
@@ -101,20 +101,24 @@ const customStyles = {
   }),
   menu: (provided: any) => ({
     ...provided,
-    backgroundColor: 'rgba(24, 24, 27, 0.2)', // bg-zinc-900 with bg-opacity-20
-    borderColor: '#27272a', // border-zinc-800
+    backgroundColor: '#050505', // Solid dark background for menu
+    borderColor: '#27272a', // Border color
   }),
   option: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: state.isSelected ? '#27272a' : state.isFocused ? '#1f1f21' : 'rgba(24, 24, 27, 0.2)', // bg-zinc-900 with bg-opacity-20
+    backgroundColor: state.isSelected
+      ? '#1a1a1a' // Slightly lighter for selected option
+      : state.isFocused
+      ? '#333333' // Slightly lighter for focused option
+      : '#050505', // Solid dark background for options
     color: 'white',
     '&:hover': {
-      backgroundColor: '#27272a', // Slightly darken on hover
+      backgroundColor: '#1a1a1a', // Slightly lighter on hover
     },
   }),
   multiValue: (provided: any) => ({
     ...provided,
-    backgroundColor: 'transparent', // Keeping tags transparent
+    backgroundColor: '#1a1a1a', // Background for selected tags
     color: 'white',
   }),
   multiValueLabel: (provided: any) => ({
@@ -125,7 +129,7 @@ const customStyles = {
     ...provided,
     color: 'white',
     '&:hover': {
-      backgroundColor: '#27272a',
+      backgroundColor: '#333333', // Background on hover
       color: 'white',
     },
   }),
@@ -135,11 +139,9 @@ const customStyles = {
   }),
   placeholder: (provided: any) => ({
     ...provided,
-    color: '#9ca3af',
+    color: '#9ca3af', // Placeholder color
   }),
 };
-
-
 
 
 const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; onSave?: (card: CardProps | null) => void }> = ({
@@ -450,20 +452,22 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
     Last edited by {lastEditedBy}
     {lastEditedBy === 'u/Failed_cocacola' || lastEditedBy === 'nrmu' ? (
       <Image
-        src="/verified.png"  // Ensure path is correct relative to the public folder
+        src="/verified.png" // Ensure path is correct relative to the public folder
         alt="Verified"
         width={16}
         height={16}
-        className="ml-1"  // Add margin to the left of the icon
+        className="ml-1 w-4 h-4"  // Added classes for fixed width and height
       />
     ) : lastEditedBy === 'unknown' ? (
       <Image
-        src="/unknown.png"  // Ensure path is correct relative to the public folder
+        src="/unknown.png" // Ensure path is correct relative to the public folder
         alt="Unknown"
         width={16}
         height={16}
-        className="ml-1"  // Add margin to the left of the icon
+        className="ml-1 w-4 h-4"  // Added classes for fixed width and height
       />
+
+
     ) : null}
   </p>
 )}
