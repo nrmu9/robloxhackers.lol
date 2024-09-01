@@ -33,7 +33,7 @@ jobs:
 
       - name: Build and restart the application
         run: |
-          ssh root@172.93.102.38 << 'EOF'
+          ssh root@198.186.130.123 << 'EOF'
             cd /root/robloxhackers.lol
             npm install
             npm run build
