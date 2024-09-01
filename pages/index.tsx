@@ -1,85 +1,110 @@
 import React from 'react';
 import SocialsCard from '@/components/SocialsCard';
 import Tilt from 'react-parallax-tilt';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'; // Import the router
 
 const IndexPage = () => {
-  const router = useRouter();
+  const router = useRouter(); // Initialize the router
 
-  const navigateToExploits = () => {
-    router.push('/exploits');
+  const handleMinecraftClick = () => {
+    router.push('/minecraft'); // Navigate within the same tab
   };
 
-  const navigateToNews = () => {
-    router.push('/news');
+  const handleRobloxClick = () => {
+    router.push('/exploits'); // Navigate within the same tab
+  };
+
+  const handleCounterStrikeClick = () => {
+    router.push('/cs2'); // Navigate within the same tab
   };
 
   return (
-    <div className="container mx-auto p-4 flex flex-col items-center">
-      <div className="flex flex-col md:flex-row w-full">
-        <div className="flex flex-col items-start md:w-1/2 p-6">
-        <h1 className="text-3xl md:text-5xl font-bold mb-4">robloxhackers.lol</h1>
+    <div className="container mx-auto p-4">
+      <div className="flex flex-col md:flex-row items-center">
+        <div className="md:w-1/2 p-6">
+          <h1 className="text-3xl md:text-5xl font-bold mb-4">robloxhackers.lol</h1>
           <p className="text-lg mb-4">
             Welcome to robloxhackers.lol, your go-to source for the latest information on security vulnerabilities, exploits, and updates. Stay ahead of potential threats and keep your knowledge up-to-date with our comprehensive resources.
           </p>
           <SocialsCard />
         </div>
-        <div className="flex flex-col md:w-1/2 space-y-8 mt-8 md:mt-0">
-          <Tilt
-            tiltMaxAngleX={15}
-            tiltMaxAngleY={15}
-            scale={1.05}
-            transitionSpeed={250}
-            glareEnable={true}
-            glareMaxOpacity={0.10}
-            glareColor="gray"
-            glarePosition="all"
-            glareBorderRadius="10px"
-          >
-            <div className="card-container bg-zinc-900 bg-opacity-20 border-zinc-800 border text-white rounded-lg shadow-lg p-6 transform transition-transform">
-              <h2 className="text-3xl font-semibold mb-4 text-center">Stay Updated with Latest Exploits</h2>
-              <p className="mb-4 text-center">
-                Keep yourself informed with the latest information on security vulnerabilities and exploits. Visit our <Link href="/exploits" className="text-indigo-400 hover:underline">Exploits Page</Link> for detailed updates and stay ahead of potential threats.
-              </p>
-              <div className="flex justify-center">
-                <button
-                  onClick={navigateToExploits}
-                  className="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-full shadow-md hover:from-indigo-600 hover:to-purple-700 transition-transform transform hover:scale-105"
+        <div className="md:w-1/2 flex flex-col items-center mt-8 md:mt-0">
+          <div className="text-left mb-4 ml-6">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">Game Selection</h2>
+            <p className="text-lg mb-4">
+              Enhance your gaming experience with a variety of cheats and exploits! The <span className="text-blue-500 glow">Counter-Strike</span> and <span className="text-green-500 glow">Minecraft</span> pages are managed by our experienced contributors who are knowledgeable in their field.
+            </p>
+            <p className="text-red-500">PREVIEW - might find misinformation for Counter-Strike 2 & Minecraft only</p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-4">
+            <div className="w-40 h-40 md:w-48 md:h-48">
+              <div onClick={handleCounterStrikeClick}>
+                <Tilt
+                  className="bg-gray-800 rounded-lg overflow-hidden cursor-pointer"
+                  tiltMaxAngleX={15}
+                  tiltMaxAngleY={15}
+                  scale={1.05} // Increase scale for slightly bigger cards
+                  transitionSpeed={250}
+                  glareEnable={true}
+                  glareMaxOpacity={0.1}
+                  glareColor="gray"
+                  glarePosition="all"
+                  glareBorderRadius="10px"
                 >
-                  Go to Exploits Page
-                </button>
+                  <div className="w-full h-full flex items-center justify-center">
+                    <img src="/cs2-index.png" alt="CS" className="w-full h-full object-cover" />
+                  </div>
+                </Tilt>
               </div>
             </div>
-          </Tilt>
-          <Tilt
-            tiltMaxAngleX={15}
-            tiltMaxAngleY={15}
-            scale={1.05}
-            transitionSpeed={250}
-            glareEnable={true}
-            glareMaxOpacity={0.10}
-            glareColor="gray"
-            glarePosition="all"
-            glareBorderRadius="10px"
-          >
-            <div className="bg-red-600 bg-opacity-20 border border-red-500 text-white rounded-lg shadow-lg p-6">
-              <h2 className="text-2xl font-semibold mb-4 text-center">Important News and Announcements</h2>
-              <p className="mb-4 text-center">
-                Visit the <Link href="/news" className="text-red-400 hover:underline">News Page</Link> to learn more about the latest news and announcements.
-              </p>
-              <div className="flex justify-center">
-                <button
-                  onClick={navigateToNews}
-                  className="inline-block bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold py-2 px-4 rounded-full shadow-md hover:from-red-600 hover:to-red-800 transition-transform transform hover:scale-105"
+            <div className="w-40 h-40 md:w-48 md:h-48">
+              <div onClick={handleMinecraftClick}>
+                <Tilt
+                  className="bg-gray-800 rounded-lg overflow-hidden cursor-pointer"
+                  tiltMaxAngleX={15}
+                  tiltMaxAngleY={15}
+                  scale={1.05} // Increase scale for slightly bigger cards
+                  transitionSpeed={250}
+                  glareEnable={true}
+                  glareMaxOpacity={0.1}
+                  glareColor="gray"
+                  glarePosition="all"
+                  glareBorderRadius="10px"
                 >
-                  Go to News Page
-                </button>
+                  <div className="w-full h-full flex items-center justify-center">
+                    <img src="/mc-index.png" alt="Minecraft" className="w-full h-full object-cover" />
+                  </div>
+                </Tilt>
               </div>
             </div>
-          </Tilt>
+            <div className="w-40 h-40 md:w-48 md:h-48">
+              <div onClick={handleRobloxClick}>
+                <Tilt
+                  className="bg-gray-800 rounded-lg overflow-hidden cursor-pointer"
+                  tiltMaxAngleX={15}
+                  tiltMaxAngleY={15}
+                  scale={1.05} // Increase scale for slightly bigger cards
+                  transitionSpeed={250}
+                  glareEnable={true}
+                  glareMaxOpacity={0.1}
+                  glareColor="gray"
+                  glarePosition="all"
+                  glareBorderRadius="10px"
+                >
+                  <div className="w-full h-full flex items-center justify-center">
+                    <img src="/rblx-index.png" alt="Roblox" className="w-full h-full object-cover" />
+                  </div>
+                </Tilt>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <style jsx>{`
+        .glow {
+          text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        }
+      `}</style>
     </div>
   );
 };

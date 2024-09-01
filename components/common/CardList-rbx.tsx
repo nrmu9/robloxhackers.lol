@@ -14,30 +14,30 @@ type TooltipProps = {
 };
 
 const InfoCard: React.FC = () => {
-  return (
-    <div className="bg-[#0c0c0e] border-[#27272a] border text-white rounded-lg shadow-lg p-4 mb-4 shadow-yellow-glow">
-      <h2 className="text-lg font-semibold text-green-500 glow">
-        Robux starting at just 1,000 R$ for only $3.45!
-      </h2>
-      <p>
-        <a 
-          href="/c/robux" 
-          className="text-white" 
-          target="_blank" 
-          rel="noopener noreferrer"
-        >
-          • Explore our list of Robux sellers by clicking here!
-        </a>
-      </p>
-      <style jsx>{`
-        .glow {
-          text-shadow: 0 0 5px rgba(0, 255, 0, 0.8), 0 0 10px rgba(0, 255, 0, 0.6);
-        }
-      `}</style>
-    </div>
-  );
-};
-
+    return (
+      <div className="bg-[#0c0c0e] border-[#27272a] border text-white rounded-lg shadow-lg p-4 mb-4 shadow-yellow-glow">
+        <h2 className="text-lg font-semibold text-green-500 glow">
+          Robux starting at just 1,000 R$ for only $3.45!
+        </h2>
+        <p>
+          <a 
+            href="/c/robux" 
+            className="text-white" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            • Explore our list of Robux sellers by clicking here!
+          </a>
+        </p>
+        <style jsx>{`
+          .glow {
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.8), 0 0 10px rgba(0, 255, 0, 0.6);
+          }
+        `}</style>
+      </div>
+    );
+  };
+  
 const isTouchDevice = () => {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 };
@@ -69,13 +69,9 @@ type CardListProps = {
 };
 
 const platformOptions = [
-  { value: '/Windows.png', label: 'Windows', text: "Supports Windows", dropdowntext: 'Windows' },
-  { value: '/Cracked Green.png', label: 'Green Cracked', text: "Crack Provider", dropdowntext: 'Crack Providers' },
-  { value: '/Cracked Orange.png', label: 'Orange Cracked', text: "Cracked Before", dropdowntext: 'Cracked Before' },
-  { value: '/Cracked Red.png', label: 'Red Cracked', text: "Recently Cracked", dropdowntext: 'Recently Cracked' },
-  { value: '/Key Purple.png', label: 'Purple Key', text: "Keysystem - Complete tasks to earn a time-limited exploit key", dropdowntext: 'Keysystem' },
+  { value: '/adurite.png', label: 'Adurite', text: 'Adurite', dropdowntext: 'Adurite' },
+  { value: '/bloxflip.png', label: 'BloxFlip', text: 'BloxFlip', dropdowntext: 'BloxFlip' },
 ];
-
 
 
 const customStyles = {
@@ -170,10 +166,10 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
             button: [editedButtonLabel, editedButtonLink],
             lastEditedBy: user?.displayName || 'unknown',
           };
-          const docRef = await addDoc(collection(db, 'cards-cs2'), newCard);
+          const docRef = await addDoc(collection(db, 'cards-rbx'), newCard);
           onSave?.({ ...newCard, id: docRef.id });
         } else {
-          await updateDoc(doc(db, 'cards-cs2', id), {
+          await updateDoc(doc(db, 'cards-rbx', id), {
             name: editedName,
             platform: editedPlatformIcons,
             pros: editedPros,
@@ -461,7 +457,7 @@ const NewCard: React.FC<{ onSave: (card: CardProps | null) => void }> = ({ onSav
         lastEditedBy: user?.displayName || 'unknown',
       };
       try {
-        const docRef = await addDoc(collection(db, 'cards-cs2'), newCard);
+        const docRef = await addDoc(collection(db, 'cards-rbx'), newCard);
         onSave({ ...newCard, id: docRef.id });
         setIsEditing(false);
       } catch (error) {
@@ -519,15 +515,15 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
   const canEdit = (cardId: string) => {
     if (!user) return false;
     if (role === 'admin') return true;
-    if (role === 'editor-cs2') return true; // Allow editor-cs2 to edit all cards
-    if (role === 'editor-cs2' && editableCards) {
+    if (role === 'editor-rbx') return true; // Allow editor-rbx to edit all cards
+    if (role === 'editor-rbx' && editableCards) {
       return editableCards.includes(cardId);
     }
     return false;
   };
 
   const fetchCards = async () => {
-    const querySnapshot = await getDocs(collection(db, 'cards-cs2'));
+    const querySnapshot = await getDocs(collection(db, 'cards-rbx'));
     let updatedCards: CardProps[] = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();

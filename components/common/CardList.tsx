@@ -8,6 +8,52 @@ import { useAuth } from '../../contexts/authContext';
 
 type ButtonProps = [string, string];
 
+type TooltipProps = {
+  text: string;
+  children: React.ReactNode;
+};
+
+
+
+const InfoCard: React.FC = () => {
+  return (
+    <div className="bg-[#0c0c0e] border-[#27272a] border text-white rounded-lg shadow-lg p-4 mb-4 shadow-yellow-glow">
+      <h2 className="text-lg font-semibold text-green-500 glow">
+        Robux starting at just 1,000 R$ for only $3.45!
+      </h2>
+      <p>
+        <a 
+          href="/c/robux" 
+          className="text-white" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          • Explore our list of Robux sellers by clicking here!
+        </a>
+      </p>
+      <style jsx>{`
+        .glow {
+          text-shadow: 0 0 5px rgba(0, 255, 0, 0.8), 0 0 10px rgba(0, 255, 0, 0.6);
+        }
+      `}</style>
+    </div>
+  );
+};
+
+const isTouchDevice = () => {
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+};
+
+
+const Tooltip: React.FC<TooltipProps> = ({ text, children }) => (
+  <div className="relative group inline-block">
+    {children}
+    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-2 py-1 text-sm text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      {text}
+    </div>
+  </div>
+);
+
 type CardProps = {
   id: string;
   name: string;
@@ -25,41 +71,43 @@ type CardListProps = {
 };
 
 const platformOptions = [
-  { value: '/Android.png', label: 'Android' },
-  { value: '/IOS.png', label: 'iOS' },
-  { value: '/MacOS.png', label: 'MacOS' },
-  { value: '/Windows.png', label: 'Windows' },
-  { value: '/Key Purple.png', label: 'Purple Key' },
+  { value: '/Android.png', label: 'Android', text: 'Android - Supports Android', dropdowntext: 'Android' },
+  { value: '/IOS.png', label: 'iOS', text: 'iOS - Supports iOS', dropdowntext: 'iOS' },
+  { value: '/MacOS.png', label: 'macOS', text: 'macOS - Supports macOS', dropdowntext: 'macOS' },
+  { value: '/Windows.png', label: 'Windows', text: 'Windows - Supports Windows', dropdowntext: 'Windows' },
+  { value: '/Serverside.png', label: 'Serverside', text: "Serverside - Exploit that has access to the server", dropdowntext: 'Serverside' },
+  { value: '/Key Purple.png', label: 'Purple Key', text: 'Keysystem - Complete tasks to earn a time-limited exploit key', dropdowntext: 'Keysystem' },
 ];
+
 
 const customStyles = {
   control: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: '#3f3f46',
-    borderColor: state.isFocused ? '#6366f1' : '#4b5563',
+    backgroundColor: '#0c0c0e', // Background color for the control (input box)
+    borderColor: state.isFocused ? '#27272a' : '#27272a', // Border color for the control
     color: 'white',
     '&:hover': {
-      borderColor: '#6366f1',
+      borderColor: '#3B3B3F',
     },
-    boxShadow: state.isFocused ? '0 0 0 1px #6366f1' : 'none',
+    boxShadow: state.isFocused ? '0 0 0 1px #0c0c0e' : 'none',
   }),
   menu: (provided: any) => ({
     ...provided,
-    backgroundColor: '#3f3f46',
-    borderColor: '#4b5563',
+    backgroundColor: '#0c0c0e', // Background color for the dropdown menu
+    borderColor: '#27272a',
   }),
   option: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: state.isSelected ? '#6366f1' : state.isFocused ? '#4b5563' : undefined,
+    backgroundColor: state.isSelected ? '#151517' : state.isFocused ? '#151517' : '#151517', // Background color for selected or focused option
     color: 'white',
     '&:hover': {
-      backgroundColor: '#4b5563',
+      backgroundColor: '#27272a',
     },
   }),
   multiValue: (provided: any) => ({
     ...provided,
-    backgroundColor: '#4b5563',
-    color: 'white',
+    backgroundColor: '#27272a',
+    color: 'black',
   }),
   multiValueLabel: (provided: any) => ({
     ...provided,
@@ -69,7 +117,7 @@ const customStyles = {
     ...provided,
     color: 'white',
     '&:hover': {
-      backgroundColor: '#6366f1',
+      backgroundColor: '#27272a',
       color: 'white',
     },
   }),
@@ -105,10 +153,11 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
   const [editedButtonLabel, setEditedButtonLabel] = useState(button[0]);
   const [editedButtonLink, setEditedButtonLink] = useState(button[1]);
   const { user } = useAuth();
-
   const handleEdit = () => {
     setIsEditing(true);
   };
+
+const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
 
   const handleConfirm = async () => {
     if (window.confirm('Are you sure you want to update this card?')) {
@@ -173,6 +222,8 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
     setEditedPlatformIcons(selectedPlatforms);
   };
 
+  
+
   return (
     <Tilt tiltMaxAngleX={1} tiltMaxAngleY={1} scale={1.05} transitionSpeed={250} glareEnable={true} glareMaxOpacity={0.10} glareColor='gray' glarePosition='all' glareBorderRadius='10px'>
       <div className="card-container bg-zinc-900 bg-opacity-20 border-zinc-800 border text-white rounded-lg shadow-lg p-6 max-w-md w-full h-full transform transition-transform flex flex-col justify-between relative">
@@ -189,10 +240,22 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
             />
           ) : (
             <div className="flex space-x-2">
-              {editedPlatformIcons.map((imagePath: string, index: number) => (
-                <Image key={index} src={imagePath} alt="Platform" width={24} height={24} />
-              ))}
-            </div>
+              {editedPlatformIcons.map((imagePath: string, index: number) => {
+                const platformOption = platformOptions.find(option => option.value === imagePath);
+                const platformLabel = platformOption?.text || 'Unknown';
+                return (
+                  <Tooltip key={index} text={platformLabel}>
+                    <Image
+                      src={imagePath}
+                      alt={platformLabel}
+                      width={24}
+                      height={24}
+                      className="cursor-pointer"
+                    />
+                  </Tooltip>
+                );
+            })}
+          </div>
           )}
         </div>
         <div className="flex-grow">
@@ -443,15 +506,22 @@ const NewCard: React.FC<{ onSave: (card: CardProps | null) => void }> = ({ onSav
   );
 };
 
+const formatOptionLabel = ({ dropdowntext }: any) => (
+  <div className="flex items-center">
+    <span>{dropdowntext}</span>
+  </div>
+);
+
 const CardList: React.FC<CardListProps> = ({ cards }) => {
   const { user, role, editableCards } = useAuth();
   const [cardList, setCardList] = useState(cards);
   const [isAddingNew, setIsAddingNew] = useState(false);
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
 
   const canEdit = (cardId: string) => {
     if (!user) return false;
     if (role === 'admin') return true;
-    if (role === 'editor-rblx') return true; // Allow editor-cs2 to edit all cards
+    if (role === 'editor-rblx') return true; // Allow editor-rbblx to edit all cards
     if (role === 'editor-rblx' && editableCards) {
       return editableCards.includes(cardId);
     }
@@ -460,7 +530,7 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
 
   const fetchCards = async () => {
     const querySnapshot = await getDocs(collection(db, 'cards'));
-    const updatedCards: CardProps[] = [];
+    let updatedCards: CardProps[] = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       updatedCards.push({
@@ -474,6 +544,11 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
         lastEditedBy: data.lastEditedBy,
       });
     });
+    if (selectedPlatforms.length > 0) {
+      updatedCards = updatedCards.filter(card =>
+        card.platform.some(platform => selectedPlatforms.includes(platform))
+      );
+    }
     setCardList(updatedCards);
   };
 
@@ -485,26 +560,44 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
     fetchCards();
   };
 
+  type TooltipProps = {
+    text: string;
+    children: React.ReactNode;
+  };
+  
+
   useEffect(() => {
     fetchCards();
-  }, []);
+  }, [selectedPlatforms]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-6">
-      {cardList && cardList.map((card) => (
-        <EditableCard key={card.id} {...card} canEdit={canEdit(card.id)} onSave={fetchCards} />
-      ))}
-      {role === 'admin' && !isAddingNew && (
-        <Tilt tiltMaxAngleX={1} tiltMaxAngleY={1} scale={1.05} transitionSpeed={250} glareEnable={true} glareMaxOpacity={0.10} glareColor='gray' glarePosition='all' glareBorderRadius='10px'>
-          <div
-            className="bg-zinc-900 bg-opacity-25 border border-zinc-800 text-white rounded-lg shadow-lg p-6 max-w-md w-full h-full transform transition-transform hover:scale-105 flex items-center justify-center cursor-pointer"
-            onClick={() => setIsAddingNew(true)}
-          >
-            <span className="text-2xl font-semibold">+ Add Card</span>
-          </div>
-        </Tilt>
-      )}
-      {role === 'admin' && isAddingNew && <NewCard onSave={handleSaveNewCard} />}
+    <div>
+      <InfoCard /> {/* Add the new component here */}
+      <Select
+        isMulti
+        options={platformOptions}
+        styles={customStyles}
+        onChange={(selectedOptions) => setSelectedPlatforms(selectedOptions.map(option => option.value))}
+        placeholder="Filter by Platforms & Types"
+        className="mb-4"
+        formatOptionLabel={formatOptionLabel}
+      />
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+        {cardList && cardList.map((card) => (
+          <EditableCard key={card.id} {...card} canEdit={canEdit(card.id)} onSave={fetchCards} />
+        ))}
+        {role === 'admin' && !isAddingNew && (
+          <Tilt tiltMaxAngleX={1} tiltMaxAngleY={1} scale={1.05} transitionSpeed={250} glareEnable={true} glareMaxOpacity={0.10} glareColor='gray' glarePosition='all' glareBorderRadius='10px'>
+            <div
+              className="bg-zinc-900 bg-opacity-25 border border-zinc-800 text-white rounded-lg shadow-lg p-6 max-w-md w-full h-full transform transition-transform hover:scale-105 flex items-center justify-center cursor-pointer"
+              onClick={() => setIsAddingNew(true)}
+            >
+              <span className="text-2xl font-semibold">+ Add Card</span>
+            </div>
+          </Tilt>
+        )}
+        {role === 'admin' && isAddingNew && <NewCard onSave={handleSaveNewCard} />}
+      </div>
     </div>
   );
 };
