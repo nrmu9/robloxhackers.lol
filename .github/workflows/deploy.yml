@@ -34,6 +34,14 @@ jobs:
       - name: Build and restart the application
         run: |
           ssh root@198.186.130.123 << 'EOF'
+            # Add NVM paths to the current session
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+            
+            # Add paths for npm and pm2 explicitly
+            export PATH="/root/.nvm/versions/node/v22.6.0/bin:$PATH"
+
             cd /root/robloxhackers.lol
             npm install
             npm run build
