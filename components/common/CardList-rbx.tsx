@@ -431,23 +431,22 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
               </div>
             ) : (
               <>
-<button
-  onClick={() => {
-    if (button[1]) {
-      window.open(button[1], '_blank');
-    }
-  }}
-  className={`inline-block border-2 font-semibold py-2 px-4 rounded-full shadow-md transition-transform transform flex-grow ${
-    button[0] === "ADVERTISEMENT"
-      ? "bg-transparent border-gray-500 text-gray-500 hover:bg-gray-400 hover:text-white"
-      : "bg-transparent border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
-  }`}
->
-  <span className={`transition-all duration-300 ${button[0] === "ADVERTISEMENT" ? "group-hover:text-white" : ""}`}>
-    {button[0]}
-  </span>
-</button>
-
+                <button
+                  onClick={() => {
+                    if (button[1]) {
+                      window.open(button[1], '_blank');
+                    }
+                  }}
+                  className={`inline-block border-2 font-semibold py-2 px-4 rounded-full shadow-md transition-transform transform flex-grow ${
+                    button[0] === "ADVERTISEMENT"
+                      ? "bg-transparent border-gray-500 text-gray-500 hover:bg-gray-400 hover:text-white"
+                      : "bg-transparent border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+                  }`}
+                >
+                  <span className={`transition-all duration-300 ${button[0] === "ADVERTISEMENT" ? "group-hover:text-white" : ""}`}>
+                    {button[0]}
+                  </span>
+                </button>
                 {canEdit && (
                   <div className="ml-2 flex-shrink-0">
                     <Image src="/Edit.png" alt="Edit" width={24} height={24} className="cursor-pointer" onClick={handleEdit} />
@@ -478,10 +477,6 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
     ) : null}
   </p>
 )}
-
-
-
-
         </div>
       </div>
     </Tilt>

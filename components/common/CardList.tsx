@@ -144,7 +144,7 @@ const customStyles = {
 };
 
 
-const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; onSave?: (card: CardProps | null) => void }> = ({
+const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; onSave?: (card: CardProps | null) => void, exploitStatus: any }> = ({
   id,
   name,
   platform,
@@ -156,6 +156,7 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
   canEdit,
   isNew,
   onSave,
+  exploitStatus,
 }) => {
   const [isEditing, setIsEditing] = useState(isNew || false);
   const [editedName, setEditedName] = useState(name);
@@ -237,7 +238,7 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
     setEditedPlatformIcons(selectedPlatforms);
   };
 
-  
+  const dotColor = exploitStatus?.updateStatus ? 'green' : exploitStatus === undefined ? 'gray' : 'red';
 
   return (
     <Tilt tiltMaxAngleX={1} tiltMaxAngleY={1} scale={1.05} transitionSpeed={250} glareEnable={true} glareMaxOpacity={0.10} glareColor='gray' glarePosition='all' glareBorderRadius='10px'>
@@ -284,7 +285,7 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
             />
           ) : (
              <h2 className="text-2xl font-semibold mb-2">
-                 <span className="text-gray-500 font-extrabold text-4xl">•</span> {name}
+                 <span className="font-extrabold text-4xl" style={{ color: dotColor }}>•</span> {name}
              </h2>
           )}
         </div>
@@ -471,10 +472,6 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
     ) : null}
   </p>
 )}
-
-
-
-
         </div>
       </div>
     </Tilt>
@@ -543,6 +540,7 @@ const NewCard: React.FC<{ onSave: (card: CardProps | null) => void }> = ({ onSav
         canEdit={true}
         isNew={true}
         onSave={onSave}
+        exploitStatus={null}
       />
   );
 };
@@ -558,15 +556,26 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
   const [cardList, setCardList] = useState(cards);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
+  const [exploitData, setExploitData] = useState<any[]>([]);
 
   const canEdit = (cardId: string) => {
     if (!user) return false;
     if (role === 'admin') return true;
-    if (role === 'editor-rblx') return true; // Allow editor-rbblx to edit all cards
+    if (role === 'editor-rblx') return true; // Allow editor-rblx to edit all cards
     if (role === 'editor-rblx' && editableCards) {
       return editableCards.includes(cardId);
     }
     return false;
+  };
+
+  const fetchExploitStatus = async () => {
+    try {
+      const response = await fetch('/api/fetchExploitStatus');
+      const data = await response.json();
+      setExploitData(data);
+    } catch (error) {
+      console.error('Failed to fetch exploit status:', error);
+    }
   };
 
   const fetchCards = async () => {
@@ -608,6 +617,7 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
   
 
   useEffect(() => {
+    fetchExploitStatus();
     fetchCards();
   }, [selectedPlatforms]);
 
@@ -624,9 +634,15 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
         formatOptionLabel={formatOptionLabel}
       />
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
-        {cardList && cardList.map((card) => (
-          <EditableCard key={card.id} {...card} canEdit={canEdit(card.id)} onSave={fetchCards} />
-        ))}
+        {cardList && cardList.map((card) => {
+          const exploitStatus = exploitData.find(exploit => {
+            const cardName = card.name === "Wave Lite" ? "Wave" : card.name;
+            return exploit.title === cardName;
+          });          
+          return (
+            <EditableCard key={card.id} {...card} canEdit={canEdit(card.id)} onSave={fetchCards} exploitStatus={exploitStatus} />
+          );
+        })}
         {role === 'admin' && !isAddingNew && (
           <Tilt tiltMaxAngleX={1} tiltMaxAngleY={1} scale={1.05} transitionSpeed={250} glareEnable={true} glareMaxOpacity={0.10} glareColor='gray' glarePosition='all' glareBorderRadius='10px'>
             <div
