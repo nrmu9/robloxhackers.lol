@@ -18,6 +18,7 @@ type CardProps = {
   cons: string[];
   note: string;
   button: ButtonProps;
+  buttonBloxProducts: ButtonProps;
   lastEditedBy: string;
 };
 
@@ -36,6 +37,7 @@ const cardConverter: FirestoreDataConverter<CardProps> = {
       cons: data.cons,
       note: data.note,
       button: data.button,
+      buttonBloxProducts: data.buttonBloxProducts,
       lastEditedBy: data.lastEditedBy,
     };
   },

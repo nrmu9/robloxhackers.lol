@@ -19,8 +19,6 @@ interface Props {
   setEditedPros: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-
-
 const InfoCard: React.FC = () => {
   return (
     <div className="bg-zinc-900 bg-opacity-20 border-zinc-800 border text-white rounded-lg shadow-lg p-4 mb-4 shadow-yellow-glow max-w-full w-full">
@@ -46,12 +44,9 @@ const InfoCard: React.FC = () => {
   );
 };
 
-
-
 const isTouchDevice = () => {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 };
-
 
 const Tooltip: React.FC<TooltipProps> = ({ text, children }) => (
   <div className="relative group inline-block">
@@ -70,6 +65,7 @@ type CardProps = {
   neutral: string[];
   cons: string[];
   button: string[];
+  buttonBloxProducts: string[];
   lastEditedBy: string;
 };
 
@@ -152,6 +148,7 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
   neutral,
   cons,
   button,
+  buttonBloxProducts,
   lastEditedBy,
   canEdit,
   isNew,
@@ -166,57 +163,61 @@ const EditableCard: React.FC<CardProps & { canEdit: boolean; isNew?: boolean; on
   const [editedCons, setEditedCons] = useState(cons);
   const [editedButtonLabel, setEditedButtonLabel] = useState(button[0]);
   const [editedButtonLink, setEditedButtonLink] = useState(button[1]);
-  const { user } = useAuth();
+  const [editedBloxProductsLabel, setEditedBloxProductsLabel] = useState(buttonBloxProducts[0]);
+  const [editedBloxProductsLink, setEditedBloxProductsLink] = useState(buttonBloxProducts[1]);
+  const { user, role } = useAuth();
   const handleEdit = () => {
     setIsEditing(true);
   };
 
 const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
 
-  const handleConfirm = async () => {
-    if (window.confirm('Are you sure you want to update this card?')) {
-      try {
-        if (isNew) {
-          const newCard = {
-            name: editedName,
-            platform: editedPlatformIcons,
-            pros: editedPros,
-            neutral: editedNeutral,
-            cons: editedCons,
-            button: [editedButtonLabel, editedButtonLink],
-            lastEditedBy: user?.displayName || 'unknown',
-          };
-          const docRef = await addDoc(collection(db, 'cards'), newCard);
-          onSave?.({ ...newCard, id: docRef.id });
-        } else {
-          await updateDoc(doc(db, 'cards', id), {
-            name: editedName,
-            platform: editedPlatformIcons,
-            pros: editedPros,
-            neutral: editedNeutral,
-            cons: editedCons,
-            button: [editedButtonLabel, editedButtonLink],
-            lastEditedBy: user?.displayName || 'unknown',
-          });
-          onSave?.({
-            id,
-            name: editedName,
-            platform: editedPlatformIcons,
-            pros: editedPros,
-            neutral: editedNeutral,
-            cons: editedCons,
-            button: [editedButtonLabel, editedButtonLink],
-            lastEditedBy: user?.displayName || 'unknown',
-          });
-        }
-        setIsEditing(false);
-      } catch (error) {
-        console.error('Error updating document: ', error);
+const handleConfirm = async () => {
+  if (window.confirm('Are you sure you want to update this card?')) {
+    try {
+      // Check the user's role and prepare the data to be updated accordingly
+      const updates: { [key: string]: any } = {};
+      if (role === 'admin' || role === 'editor') {
+        // Allow full edits
+        updates['name'] = editedName;
+        updates['platform'] = editedPlatformIcons;
+        updates['pros'] = editedPros;
+        updates['neutral'] = editedNeutral;
+        updates['cons'] = editedCons;
+        updates['button'] = [editedButtonLabel, editedButtonLink];
+        updates['buttonBloxProducts'] = [editedBloxProductsLabel, editedBloxProductsLink];
+      } else if (role === 'bloxproducts-editor') {
+        // Restrict edits to only `buttonBloxProducts`
+        updates['buttonBloxProducts'] = [editedBloxProductsLabel, editedBloxProductsLink];
       }
-      
-    }
-  };
 
+      if (isNew) {
+        const newCard = {
+          ...updates,
+          lastEditedBy: user?.displayName || 'unknown',
+        };
+        const docRef = await addDoc(collection(db, 'cards'), newCard);
+        onSave?.({ ...newCard, id: docRef.id, name: editedName, platform: editedPlatformIcons, pros: editedPros, neutral: editedNeutral, cons: editedCons, button: [editedButtonLabel, editedButtonLink], buttonBloxProducts: [editedBloxProductsLabel, editedBloxProductsLink] });
+      } else {
+        await updateDoc(doc(db, 'cards', id), updates);
+        onSave?.({
+          id,
+          name: editedName,
+          platform: editedPlatformIcons,
+          pros: editedPros,
+          neutral: editedNeutral,
+          cons: editedCons,
+          button: [editedButtonLabel, editedButtonLink],
+          buttonBloxProducts: [editedBloxProductsLabel, editedBloxProductsLink],
+          lastEditedBy: user?.displayName || 'unknown',
+        });
+      }
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating document: ', error);
+    }
+  }
+};
   
   const handleCancel = () => {
     if (isNew) {
@@ -230,6 +231,8 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
       setEditedCons(cons);
       setEditedButtonLabel(button[0]);
       setEditedButtonLink(button[1]);
+      setEditedBloxProductsLabel(buttonBloxProducts[0]);
+      setEditedBloxProductsLink(buttonBloxProducts[1]);
     }
   };
 
@@ -241,7 +244,17 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
   const dotColor = exploitStatus?.updateStatus ? 'green' : exploitStatus === undefined ? 'gray' : 'red';
 
   return (
-    <Tilt tiltMaxAngleX={1} tiltMaxAngleY={1} scale={1.05} transitionSpeed={250} glareEnable={true} glareMaxOpacity={0.10} glareColor='gray' glarePosition='all' glareBorderRadius='10px'>
+    <Tilt
+      tiltMaxAngleX={1}
+      tiltMaxAngleY={1}
+      scale={1.05}
+      transitionSpeed={250}
+      glareEnable={true}
+      glareMaxOpacity={0.1}
+      glareColor="gray"
+      glarePosition="all"
+      glareBorderRadius="10px"
+    >
       <div className="card-container bg-zinc-900 bg-opacity-20 border-zinc-800 border text-white rounded-lg shadow-lg p-6 max-w-md w-full h-full transform transition-transform flex flex-col justify-between relative">
         <div className="absolute top-4 right-4">
           {isEditing ? (
@@ -250,15 +263,19 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
               options={platformOptions}
               styles={customStyles}
               onChange={handlePlatformChange}
-              value={platformOptions.filter(option => editedPlatformIcons.includes(option.value))}
+              value={platformOptions.filter((option) =>
+                editedPlatformIcons.includes(option.value)
+              )}
               placeholder="Select Platforms"
               className="w-48"
+              isDisabled={role === 'bloxproducts-editor'} // Disable for bloxproducts-editor
             />
-            
           ) : (
             <div className="flex space-x-2">
               {editedPlatformIcons.map((imagePath: string, index: number) => {
-                const platformOption = platformOptions.find(option => option.value === imagePath);
+                const platformOption = platformOptions.find(
+                  (option) => option.value === imagePath
+                );
                 const platformLabel = platformOption?.text || 'Unknown';
                 return (
                   <Tooltip key={index} text={platformLabel}>
@@ -271,8 +288,8 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
                     />
                   </Tooltip>
                 );
-            })}
-          </div>
+              })}
+            </div>
           )}
         </div>
         <div className="flex-grow">
@@ -282,11 +299,18 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
               value={editedName}
               onChange={(e) => setEditedName(e.target.value)}
               className="text-2xl font-semibold mb-2 bg-transparent border-b border-gray-500 focus:outline-none w-full"
+              disabled={role === 'bloxproducts-editor'} // Disable for bloxproducts-editor
             />
           ) : (
-             <h2 className="text-2xl font-semibold mb-2">
-                 <span className="font-extrabold text-4xl" style={{ color: dotColor }}>•</span> {name}
-             </h2>
+            <h2 className="text-2xl font-semibold mb-2">
+              <span
+                className="font-extrabold text-4xl"
+                style={{ color: dotColor }}
+              >
+                •
+              </span>{' '}
+              {name}
+            </h2>
           )}
         </div>
         <div className="flex-grow mb-4 text-left">
@@ -306,11 +330,16 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
                           setEditedPros(newPros);
                         }}
                         className="w-full bg-transparent border-b border-gray-500 focus:outline-none"
+                        disabled={role === 'bloxproducts-editor'} // Disable for bloxproducts-editor
                       />
-                      <button onClick={() => {
-                        const newPros = editedPros.filter((_, i) => i !== index);
-                        setEditedPros(newPros);
-                      }} className="text-red-400 ml-2">
+                      <button
+                        onClick={() => {
+                          const newPros = editedPros.filter((_, i) => i !== index);
+                          setEditedPros(newPros);
+                        }}
+                        className="text-red-400 ml-2"
+                        disabled={role === 'bloxproducts-editor'} // Disable for bloxproducts-editor
+                      >
                         ×
                       </button>
                     </>
@@ -319,8 +348,11 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
                   )}
                 </div>
               ))}
-              {isEditing && (
-                <button onClick={() => setEditedPros([...editedPros, ''])} className="text-green-400 mt-2">
+              {isEditing && role !== 'bloxproducts-editor' && (
+                <button
+                  onClick={() => setEditedPros([...editedPros, ''])}
+                  className="text-green-400 mt-2"
+                >
                   + Add Pro
                 </button>
               )}
@@ -342,11 +374,18 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
                           setEditedNeutral(newNeutral);
                         }}
                         className="w-full bg-transparent border-b border-gray-500 focus:outline-none"
+                        disabled={role === 'bloxproducts-editor'} // Disable for bloxproducts-editor
                       />
-                      <button onClick={() => {
-                        const newNeutral = editedNeutral.filter((_, i) => i !== index);
-                        setEditedNeutral(newNeutral);
-                      }} className="text-red-400 ml-2">
+                      <button
+                        onClick={() => {
+                          const newNeutral = editedNeutral.filter(
+                            (_, i) => i !== index
+                          );
+                          setEditedNeutral(newNeutral);
+                        }}
+                        className="text-red-400 ml-2"
+                        disabled={role === 'bloxproducts-editor'} // Disable for bloxproducts-editor
+                      >
                         ×
                       </button>
                     </>
@@ -355,8 +394,11 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
                   )}
                 </div>
               ))}
-              {isEditing && (
-                <button onClick={() => setEditedNeutral([...editedNeutral, ''])} className="text-yellow-400 mt-2">
+              {isEditing && role !== 'bloxproducts-editor' && (
+                <button
+                  onClick={() => setEditedNeutral([...editedNeutral, ''])}
+                  className="text-yellow-400 mt-2"
+                >
                   + Add Neutral
                 </button>
               )}
@@ -378,11 +420,16 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
                           setEditedCons(newCons);
                         }}
                         className="w-full bg-transparent border-b border-gray-500 focus:outline-none"
+                        disabled={role === 'bloxproducts-editor'} // Disable for bloxproducts-editor
                       />
-                      <button onClick={() => {
-                        const newCons = editedCons.filter((_, i) => i !== index);
-                        setEditedCons(newCons);
-                      }} className="text-red-400 ml-2">
+                      <button
+                        onClick={() => {
+                          const newCons = editedCons.filter((_, i) => i !== index);
+                          setEditedCons(newCons);
+                        }}
+                        className="text-red-400 ml-2"
+                        disabled={role === 'bloxproducts-editor'} // Disable for bloxproducts-editor
+                      >
                         ×
                       </button>
                     </>
@@ -391,8 +438,11 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
                   )}
                 </div>
               ))}
-              {isEditing && (
-                <button onClick={() => setEditedCons([...editedCons, ''])} className="text-red-400 mt-2">
+              {isEditing && role !== 'bloxproducts-editor' && (
+                <button
+                  onClick={() => setEditedCons([...editedCons, ''])}
+                  className="text-red-400 mt-2"
+                >
                   + Add Con
                 </button>
               )}
@@ -402,14 +452,15 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
         <div className="mt-auto">
           <div className="flex items-center justify-between mt-4">
             {isEditing ? (
-              <div className="flex flex-col md:flex-row justify-between">
-                <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 w-full">
+              <div className="flex flex-col md:flex-row justify-between w-full space-y-2 md:space-y-0 md:space-x-4">
+                <div className="flex flex-col w-full md:w-1/2">
                   <input
                     type="text"
                     placeholder="Button Label"
                     value={editedButtonLabel}
                     onChange={(e) => setEditedButtonLabel(e.target.value)}
-                    className="w-full bg-transparent border-b border-gray-500 focus:outline-none"
+                    className="w-full bg-transparent border-b border-gray-500 focus:outline-none mb-2"
+                    disabled={role === 'bloxproducts-editor'} // Disable for bloxproducts-editor
                   />
                   <input
                     type="text"
@@ -417,65 +468,122 @@ const [selectedPlatforms, setSelectedPlatforms] = useState(platform);
                     value={editedButtonLink}
                     onChange={(e) => setEditedButtonLink(e.target.value)}
                     className="w-full bg-transparent border-b border-gray-500 focus:outline-none"
+                    disabled={role === 'bloxproducts-editor'} // Disable for bloxproducts-editor
                   />
                 </div>
-                <div className="flex space-x-2 mt-2 md:mt-0">
-                  <a onClick={handleConfirm} className="inline-block transition-transform transform hover:scale-105 cursor-pointer">
-                    <Image src="/Confirm.png" alt="Confirm" width={24} height={24} className="inline" />
+                <div className="flex flex-col w-full md:w-1/2">
+                  <input
+                    type="text"
+                    placeholder="BloxProducts Label"
+                    value={editedBloxProductsLabel}
+                    onChange={(e) => setEditedBloxProductsLabel(e.target.value)}
+                    className="w-full bg-transparent border-b border-gray-500 focus:outline-none mb-2"
+                    disabled={role !== 'bloxproducts-editor'} // Enable only for bloxproducts-editor
+                  />
+                  <input
+                    type="text"
+                    placeholder="BloxProducts Link"
+                    value={editedBloxProductsLink}
+                    onChange={(e) => setEditedBloxProductsLink(e.target.value)}
+                    className="w-full bg-transparent border-b border-gray-500 focus:outline-none"
+                    disabled={role !== 'bloxproducts-editor'} // Enable only for bloxproducts-editor
+                  />
+                </div>
+                <div className="flex space-x-2 mt-2 md:mt-0 items-center">
+                  <a
+                    onClick={handleConfirm}
+                    className="inline-block transition-transform transform hover:scale-105 cursor-pointer"
+                  >
+                    <Image
+                      src="/Confirm.png"
+                      alt="Confirm"
+                      width={24}
+                      height={24}
+                      className="inline"
+                    />
                   </a>
-                  <a onClick={handleCancel} className="inline-block transition-transform transform hover:scale-105 ml-2 cursor-pointer">
-                    <Image src="/Cancel.png" alt="Cancel" width={24} height={24} className="inline" />
+                  <a
+                    onClick={handleCancel}
+                    className="inline-block transition-transform transform hover:scale-105 ml-2 cursor-pointer"
+                  >
+                    <Image
+                      src="/Cancel.png"
+                      alt="Cancel"
+                      width={24}
+                      height={24}
+                      className="inline"
+                    />
                   </a>
                 </div>
               </div>
             ) : (
-              <>
-                <button
-                  onClick={() => {
-                    if (button[1]) {
-                      window.open(button[1], '_blank');
-                    }
-                  }}
-                  className="inline-block bg-transparent border-2 border-red-500 text-red-500 font-semibold py-2 px-4 rounded-full shadow-md hover:bg-red-500 hover:text-white transition-transform transform hover:scale-105 flex-grow"
-                >
-                  {button[0]}
-                </button>
+              <div className="flex items-center w-full space-x-2">
+                <div className="flex-grow flex space-x-0">
+                  <button
+                    onClick={() => {
+                      if (button[1]) {
+                        window.open(button[1], '_blank');
+                      }
+                    }}
+                    className="inline-block bg-transparent border-2 border-red-500 text-red-500 font-semibold py-2 px-4 rounded-l-full shadow-md hover:bg-red-500 hover:text-white transition-transform transform hover:scale-105 w-1/2"
+                  >
+                    {button[0]}
+                  </button>
+  
+                  {/* Right Button - New button */}
+                  <button
+                    onClick={() => {
+                      if (buttonBloxProducts[1]) {
+                        window.open(buttonBloxProducts[1], '_blank');
+                      }
+                    }}
+                    className="inline-block bg-transparent border-2 border-green-500 text-green-500 font-semibold py-2 px-4 rounded-r-full shadow-md hover:bg-green-500 hover:text-white transition-transform transform hover:scale-105 w-1/2"
+                  >
+                    {buttonBloxProducts[0] || 'N/A'}
+                  </button>
+                </div>
                 {canEdit && (
-                  <div className="ml-2 flex-shrink-0">
-                    <Image src="/Edit.png" alt="Edit" width={24} height={24} className="cursor-pointer" onClick={handleEdit} />
+                  <div className="flex-shrink-0 ml-2">
+                    <Image
+                      src="/Edit.png"
+                      alt="Edit"
+                      width={24}
+                      height={24}
+                      className="cursor-pointer"
+                      onClick={handleEdit}
+                      style={{ alignSelf: 'center' }}
+                    />
                   </div>
                 )}
-              </>
+              </div>
             )}
           </div>
           {lastEditedBy && (
-  <p className="text-gray-500 mt-2 text-sm text-center flex items-center justify-center">
-    Last edited by {lastEditedBy}
-    {lastEditedBy === 'u/Failed_cocacola' || lastEditedBy === 'nrmu' ? (
-      <Image
-        src="/verified.png" // Ensure path is correct relative to the public folder
-        alt="Verified"
-        width={16}
-        height={16}
-        className="ml-1 w-4 h-4"  // Added classes for fixed width and height
-      />
-    ) : lastEditedBy === 'unknown' ? (
-      <Image
-        src="/unknown.png" // Ensure path is correct relative to the public folder
-        alt="Unknown"
-        width={16}
-        height={16}
-        className="ml-1 w-4 h-4"  // Added classes for fixed width and height
-      />
-
-
-    ) : null}
-  </p>
-)}
+            <p className="text-gray-500 mt-2 text-sm text-center flex items-center justify-center">
+              Last edited by {lastEditedBy}
+              {lastEditedBy === 'u/Failed_cocacola' || lastEditedBy === 'nrmu' ? (
+                <Image
+                  src="/verified.png"
+                  alt="Verified"
+                  width={16}
+                  height={16}
+                  className="ml-1 w-4 h-4"
+                />
+              ) : lastEditedBy === 'unknown' ? (
+                <Image
+                  src="/unknown.png"
+                  alt="Unknown"
+                  width={16}
+                  height={16}
+                  className="ml-1 w-4 h-4"
+                />
+              ) : null}
+            </p>
+          )}
         </div>
       </div>
     </Tilt>
-  );
+  );  
 };
 
 const NewCard: React.FC<{ onSave: (card: CardProps | null) => void }> = ({ onSave }) => {
@@ -487,6 +595,8 @@ const NewCard: React.FC<{ onSave: (card: CardProps | null) => void }> = ({ onSav
   const [cons, setCons] = useState<string[]>(['']);
   const [buttonLabel, setButtonLabel] = useState('');
   const [buttonLink, setButtonLink] = useState('');
+  const [buttonBloxProductsLabel, setButtonBloxProductsLabel] = useState('');
+  const [buttonBloxProductsLink, setButtonBloxProductsLink] = useState('');
   const { user } = useAuth();
 
   const handleConfirm = async () => {
@@ -498,6 +608,7 @@ const NewCard: React.FC<{ onSave: (card: CardProps | null) => void }> = ({ onSav
         neutral,
         cons,
         button: [buttonLabel, buttonLink],
+        buttonBloxProducts: [buttonBloxProductsLabel, buttonBloxProductsLink],
         lastEditedBy: user?.displayName || 'unknown',
       };
       try {
@@ -519,6 +630,8 @@ const NewCard: React.FC<{ onSave: (card: CardProps | null) => void }> = ({ onSav
     setCons(['']);
     setButtonLabel('');
     setButtonLink('');
+    setButtonBloxProductsLabel('');
+    setButtonBloxProductsLink('');
     onSave(null); // Reset the new card state in the parent component
   };
 
@@ -536,6 +649,7 @@ const NewCard: React.FC<{ onSave: (card: CardProps | null) => void }> = ({ onSav
         neutral={neutral}
         cons={cons}
         button={[buttonLabel, buttonLink]}
+        buttonBloxProducts={[buttonBloxProductsLabel, buttonBloxProductsLink]}
         lastEditedBy=""
         canEdit={true}
         isNew={true}
@@ -561,10 +675,8 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
   const canEdit = (cardId: string) => {
     if (!user) return false;
     if (role === 'admin') return true;
-    if (role === 'editor-rblx') return true; // Allow editor-rblx to edit all cards
-    if (role === 'editor-rblx' && editableCards) {
-      return editableCards.includes(cardId);
-    }
+    if (role === 'editor-rblx') return true;
+    if (role === 'bloxproducts-editor') return true;
     return false;
   };
 
@@ -591,6 +703,7 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
         neutral: data.neutral,
         cons: data.cons,
         button: data.button,
+        buttonBloxProducts: data.buttonBloxProducts,
         lastEditedBy: data.lastEditedBy,
       });
     });
@@ -623,7 +736,7 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
 
   return (
     <div>
-      <InfoCard /> {/* Add the new component here */}
+      <InfoCard />
       <Select
         isMulti
         options={platformOptions}
@@ -638,7 +751,7 @@ const CardList: React.FC<CardListProps> = ({ cards }) => {
           const exploitStatus = exploitData.find(exploit => {
             const cardName = card.name === "Wave Lite" ? "Wave" : card.name;
             return exploit.title === cardName;
-          });          
+          });
           return (
             <EditableCard key={card.id} {...card} canEdit={canEdit(card.id)} onSave={fetchCards} exploitStatus={exploitStatus} />
           );
