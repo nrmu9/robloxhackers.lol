@@ -16,6 +16,7 @@ const cardConverter: FirestoreDataConverter<CardProps> = {
       neutral: data.neutral,
       cons: data.cons,
       button: data.button,
+      buttonBloxProducts: data.buttonBloxProducts,
       lastEditedBy: data.lastEditedBy,
     };
   },
