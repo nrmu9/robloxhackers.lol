@@ -525,23 +525,26 @@ const handleConfirm = async () => {
                         window.open(button[1], '_blank');
                       }
                     }}
-                    className="inline-block bg-transparent border-2 border-red-500 text-red-500 font-semibold py-2 px-4 rounded-l-full shadow-md hover:bg-red-500 hover:text-white transition-transform transform hover:scale-105 w-1/2"
+                    className={`inline-block bg-transparent border-2 border-red-500 text-red-500 font-semibold py-2 px-4 shadow-md hover:bg-red-500 hover:text-white transition-transform transform hover:scale-105 ${buttonBloxProducts[0] ? 'rounded-l-full w-1/2' : 'rounded-full w-full'}`}
                   >
                     {button[0]}
                   </button>
-  
+
                   {/* Right Button - New button */}
-                  <button
-                    onClick={() => {
-                      if (buttonBloxProducts[1]) {
-                        window.open(buttonBloxProducts[1], '_blank');
-                      }
-                    }}
-                    className="inline-block bg-transparent border-2 border-green-500 text-green-500 font-semibold py-2 px-4 rounded-r-full shadow-md hover:bg-green-500 hover:text-white transition-transform transform hover:scale-105 w-1/2"
-                  >
-                    {buttonBloxProducts[0] || 'N/A'}
-                  </button>
+                  {buttonBloxProducts[0] && (
+                    <button
+                      onClick={() => {
+                        if (buttonBloxProducts[1]) {
+                          window.open(buttonBloxProducts[1], '_blank');
+                        }
+                      }}
+                      className="inline-block bg-transparent border-2 border-green-500 text-green-500 font-semibold py-2 px-4 rounded-r-full shadow-md hover:bg-green-500 hover:text-white transition-transform transform hover:scale-105 w-1/2"
+                    >
+                      {buttonBloxProducts[0]}
+                    </button>
+                  )}
                 </div>
+
                 {canEdit && (
                   <div className="flex-shrink-0 ml-2">
                     <Image
